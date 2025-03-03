@@ -2,8 +2,8 @@ Day 1: Introduction to GPU Computing and Data Parallel Programming
 
 1) Resources:
 
-The lecture 1&2 of GPU Computing by Dr. Izzat El Hajj
-Lecture 1: https://youtu.be/4pkbXmE4POc?si=KBuRCSvqUNrdQjR6
+The lecture 1&2 of GPU Computing by Dr. Izzat El Hajj  
+Lecture 1: https://youtu.be/4pkbXmE4POc?si=KBuRCSvqUNrdQjR6  
 Lecture 2: https://youtu.be/iE-xGWBQtH0?si=srMbPD6fx12dCcs_
 
 2) Topics Covered:
@@ -20,7 +20,7 @@ The memory management and computation strategy:
 - Copy the data from the device (GPU) to the host (CPU)
 - Deallocate the memory on the device (GPU)
 
-The one GPU thread is responsible for performing an operation via kernel. The kernel is a function that is executed on the GPU. The kernel is launched with a specific number of blocks and threads. 
+One GPU thread is responsible for performing an operation via kernel. The kernel is a function that is executed on the GPU. The kernel is launched with a specific number of blocks and threads. 
 
 4) Implementation:
 
