@@ -14,11 +14,11 @@ Lecture 2: https://youtu.be/iE-xGWBQtH0?si=srMbPD6fx12dCcs_
 3) Summary of the Lecture:
 The memory management and computation strategy:
 
-a) Allocate memory on the device (GPU)
-b) Copy the data from the host (CPU) to the device (GPU)
-c) Launch the kernel (function) on the device (GPU)
-d) Copy the data from the device (GPU) to the host (CPU)
-e) Deallocate the memory on the device (GPU)
+- Allocate memory on the device (GPU)
+- Copy the data from the host (CPU) to the device (GPU)
+- Launch the kernel (function) on the device (GPU)
+- Copy the data from the device (GPU) to the host (CPU)
+- Deallocate the memory on the device (GPU)
 
 The one GPU thread is responsible for performing an operation via kernel. The kernel is a function that is executed on the GPU. The kernel is launched with a specific number of blocks and threads. 
 
