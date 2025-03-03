@@ -28,15 +28,15 @@ The vector addition is implemented in CUDA. The vector addition is a simple oper
 
 Compiling the code:  
 
-<pre> ```nvcc vector_addition.cu -o vecadd``` </pre>
+<pre> nvcc vector_addition.cu -o vecadd </pre>
 
 Runnung the code after compiling: 
-<pre> ``` ./vecadd ``` </pre>
+<pre> vecadd </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:
 
-<pre> ```
+<pre> 
 CPU vecadd elapsed time: 72.6874 ms
 GPU kernel elapsed time: 1.83034 ms
 Overall GPU vecadd elapsed time: 55.8308 ms
-``` </pre>
+</pre>
