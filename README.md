@@ -1,5 +1,5 @@
 # 120_days_of_CUDA_challenge
-I'm sharing my learnings&progress on GPU computing and data parallel programming in CUDA with resources and explanation of each project with code.  
+I'm sharing my learnings&progress on GPU computing and data parallel programming in CUDA with resources and explanations of each project with code.  
 
 Here is my 120 days CUDA challenge!
 
