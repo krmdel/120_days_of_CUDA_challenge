@@ -11,9 +11,9 @@ Lecture 2: https://youtu.be/iE-xGWBQtH0?si=srMbPD6fx12dCcs_
 - The basics of CUDA programming
 - The implementation of vector addition using CUDA
 
-3) Summary of the Lecture:
-The memory management and computation strategy:
+3) Summary of the Lecture:  
 
+The memory management and computation strategy:
 - Allocate memory on the device (GPU)
 - Copy the data from the host (CPU) to the device (GPU)
 - Launch the kernel (function) on the device (GPU)
