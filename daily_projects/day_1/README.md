@@ -35,7 +35,7 @@ Runnung the code after compiling:
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:
 
-<pre> CPU vecadd elapsed time: 72.6874 ms
+<pre>CPU vecadd elapsed time: 72.6874 ms
 GPU kernel elapsed time: 1.83034 ms
 Overall GPU vecadd elapsed time: 55.8308 ms
 </pre>
