@@ -26,11 +26,17 @@ One GPU thread is responsible for performing an operation via kernel. The kernel
 
 The vector addition is implemented in CUDA. The vector addition is a simple operation that adds two vectors and stores the result in the third vector. The vector addition is implemented in the CPU and GPU. The time taken by the CPU and GPU is compared. The GPU kernel is launched with 512 threads per block. The vector addition is implemented in the vector_addition.cu file.
 
-Compiling the code: nvcc vector_addition.cu -o vecadd
-Runnung the code after compiling: vecadd
+Compiling the code:  
+
+<pre> ```nvcc vector_addition.cu -o vecadd``` </pre>
+
+Runnung the code after compiling: 
+<pre> ``` ./vecadd ``` </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:
 
+<pre> ```
 CPU vecadd elapsed time: 72.6874 ms
 GPU kernel elapsed time: 1.83034 ms
 Overall GPU vecadd elapsed time: 55.8308 ms
+``` </pre>
