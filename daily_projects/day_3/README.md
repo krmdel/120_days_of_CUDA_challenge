@@ -50,10 +50,12 @@ Compiling the code:
 
 <pre> nvcc matmulequaldim.cu -o matmuleq </pre>
 <pre> nvcc matmulunequaldim.cu -o matmuluneq </pre>
+<pre> nvcc resource.cu -o resource </pre>
 
 Runnung the code after compiling: 
 <pre> matmuleq </pre>
 <pre> matmuluneq </pre>
+<pre> resource </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:
 
@@ -71,4 +73,15 @@ matmuluneq:
 Time for host-to-device copy: 0.561920 ms
 Time for kernel execution: 1.790944 ms
 Time for device-to-host copy: 0.803136 ms
+</pre>
+
+resource:
+
+<pre>GPU Name: NVIDIA GeForce RTX 3080 Ti Laptop GPU
+Total Global Memory: 15 GB
+Number of SMs: 58
+Max threads per multiprocessor: 1536
+Max threads per block: 1024
+Max blocks per multiprocessor: 16
+Warp size: 32
 </pre>
