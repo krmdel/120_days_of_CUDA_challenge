@@ -93,17 +93,16 @@ void matmul_gpu(float* a, float* b, float* c, unsigned int N) {
 }
 
 int main() {
-    unsigned int N = 1024; // Dimension of the square matrices.
+    unsigned int N = 1024; 
 
     // Allocate memory on CPU for matrices A, B, and C
     float *a = (float*)malloc(N * N * sizeof(float));
     float *b = (float*)malloc(N * N * sizeof(float));
     float *c = (float*)malloc(N * N * sizeof(float));
 
-    // Initialize matrices A and B with sample values
     for (int i = 0; i < N * N; i++) {
-        a[i] = 1.0f; // For example, fill A with 1's.
-        b[i] = 2.0f; // For example, fill B with 2's.
+        a[i] = 1.0f; 
+        b[i] = 2.0f; 
     }
 
     // Call the function to perform matrix multiplication

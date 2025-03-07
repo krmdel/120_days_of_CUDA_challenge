@@ -6,18 +6,12 @@
 // A is N x M, B is M x K, and C is N x K.
 __global__ void matmul_kernel(float* A, float* B, float* C,
                               unsigned int N, unsigned int M, unsigned int K) {
-    // Compute the row index for the output matrix C
     unsigned int row = blockIdx.y * blockDim.y + threadIdx.y;
-    // Compute the column index for the output matrix C
     unsigned int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-    // Check boundary conditions for the output matrix
     if (row < N && col < K) {
         float sum = 0.0f;
-        // Accumulate over the shared dimension M
         for (unsigned int i = 0; i < M; i++) {
-            // A is stored in row-major order: element at (row, i)
-            // B is stored in row-major order: element at (i, col)
             sum += A[row * M + i] * B[i * K + col];
         }
         // Write the result to C at (row, col)
@@ -27,7 +21,6 @@ __global__ void matmul_kernel(float* A, float* B, float* C,
 
 void matmul_gpu(float* A, float* B, float* C,
                 unsigned int N, unsigned int M, unsigned int K) {
-    // Create CUDA events for timing different stages
     cudaEvent_t start_alloc, stop_alloc;
     cudaEvent_t start_h2d, stop_h2d;
     cudaEvent_t start_kernel, stop_kernel;
@@ -106,10 +99,9 @@ void matmul_gpu(float* A, float* B, float* C,
 }
 
 int main() {
-    // Dimensions for the multiplication: A is N x M, B is M x K, C is N x K.
-    unsigned int N = 1024; // Number of rows in A and C
-    unsigned int M = 512;  // Number of columns in A and rows in B
-    unsigned int K = 768;  // Number of columns in B and C
+    unsigned int N = 1024; 
+    unsigned int M = 512;  
+    unsigned int K = 768;  
 
     // Allocate memory on CPU for matrices A, B, and C
     float *A = (float*)malloc(N * M * sizeof(float));
@@ -126,8 +118,6 @@ int main() {
 
     // Call the function to perform matrix multiplication
     matmul_gpu(A, B, C, N, M, K);
-
-    // Optionally, you could print some elements of C here for verification.
 
     // Free CPU memory
     free(A);

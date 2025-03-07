@@ -10,7 +10,7 @@ Lecture 5: https://youtu.be/31ZyYkoClT4?si=GekGWjfkUBABmL7Y
 - Performance metrics
 - Performance bound: memory/compute-bound
 - Memory in GPU architecture
-- Tiled Matrix-Matrix Multiplication
+- Tiled Matrix Multiplication
 
 3) Summary of the Lecture:  
 

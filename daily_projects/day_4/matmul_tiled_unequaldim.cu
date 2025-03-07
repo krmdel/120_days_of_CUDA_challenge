@@ -9,36 +9,30 @@ __global__ void matmul_tiled_kernel(float* A, float* B, float* C, int M, int K, 
     __shared__ float ds_A[TILE_WIDTH][TILE_WIDTH];
     __shared__ float ds_B[TILE_WIDTH][TILE_WIDTH];
 
-    // Calculate the row and column index of the C element this thread computes
     int Row = blockIdx.y * TILE_WIDTH + threadIdx.y;
     int Col = blockIdx.x * TILE_WIDTH + threadIdx.x;
 
     float Cvalue = 0.0f;
 
-    // Loop over the tiles of A and B along the K dimension
     for (int ph = 0; ph < (K + TILE_WIDTH - 1) / TILE_WIDTH; ph++) {
-        // Load tile from A into shared memory (check bounds)
         if (Row < M && ph * TILE_WIDTH + threadIdx.x < K)
             ds_A[threadIdx.y][threadIdx.x] = A[Row * K + ph * TILE_WIDTH + threadIdx.x];
         else
             ds_A[threadIdx.y][threadIdx.x] = 0.0f;
 
-        // Load tile from B into shared memory (check bounds)
         if (Col < N && ph * TILE_WIDTH + threadIdx.y < K)
             ds_B[threadIdx.y][threadIdx.x] = B[(ph * TILE_WIDTH + threadIdx.y) * N + Col];
         else
             ds_B[threadIdx.y][threadIdx.x] = 0.0f;
 
-        __syncthreads();  // Ensure the tile is loaded
+        __syncthreads(); 
 
-        // Compute partial product for this tile
         for (int k = 0; k < TILE_WIDTH; k++) {
             Cvalue += ds_A[threadIdx.y][k] * ds_B[k][threadIdx.x];
         }
-        __syncthreads();  // Wait for all threads before loading new tiles
+        __syncthreads();  
     }
 
-    // Write the result if within output matrix boundaries
     if (Row < M && Col < N) {
         C[Row * N + Col] = Cvalue;
     }
@@ -120,18 +114,15 @@ void matmul_gpu(float* A, float* B, float* C, int M, int K, int N) {
 }
 
 int main() {
-    // Dimensions for matrices:
-    // A: M x K, B: K x N, C: M x N.
-    // Try dimensions that are not multiples of TILE_WIDTH for testing boundary conditions.
-    int M = 1023;  // number of rows in A and C
-    int K = 1025;  // number of columns in A and rows in B
-    int N = 1027;  // number of columns in B and C
+   
+    int M = 1023;
+    int K = 1025; 
+    int N = 1027; 
 
     float *A = (float*)malloc(M * K * sizeof(float));
     float *B = (float*)malloc(K * N * sizeof(float));
     float *C = (float*)malloc(M * N * sizeof(float));
 
-    // Initialize matrices A and B with sample values
     for (int i = 0; i < M * K; i++) {
         A[i] = 1.0f;
     }
@@ -141,8 +132,6 @@ int main() {
 
     // Perform tiled matrix multiplication on the GPU
     matmul_gpu(A, B, C, M, K, N);
-
-    // Optionally, verify the result or print a subset of the output matrix C.
 
     free(A);
     free(B);

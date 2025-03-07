@@ -18,3 +18,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 4
 - Lecture 5 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of tiled matrix multiplication in CUDA
+
+## Day 5
+- Lecture 6 of GPU Computing by Dr. Izzat El Hajj
+- Implementation and comparison of tiled matrix multiplication between CPU and GPU in CUDA

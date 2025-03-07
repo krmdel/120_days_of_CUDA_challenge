@@ -4,25 +4,21 @@
 
 #define TILE_WIDTH 32
 
-// Tiled Matrix Multiplication Kernel using Shared Memory
+// Tiled Matrix Multiplication Kernel for A (NxN), B (NxN) and C (NxN)
 __global__ void matmul_tiled_kernel(float* A, float* B, float* C, unsigned int N) {
     __shared__ float ds_A[TILE_WIDTH][TILE_WIDTH];
     __shared__ float ds_B[TILE_WIDTH][TILE_WIDTH];
 
-    // Calculate block index and thread index
     unsigned int bx = blockIdx.x;
     unsigned int by = blockIdx.y;
     unsigned int tx = threadIdx.x;
     unsigned int ty = threadIdx.y;
 
-    // Determine the row and column of the C element to work on
     unsigned int Row = by * TILE_WIDTH + ty;
     unsigned int Col = bx * TILE_WIDTH + tx;
     
     float Cvalue = 0.0f;
 
-    // Loop over the tiles of A and B required to compute C[Row][Col]
-    // The number of phases is ceil(N/TILE_WIDTH)
     for (unsigned int ph = 0; ph < (N + TILE_WIDTH - 1) / TILE_WIDTH; ph++) {
         // Load a tile of matrix A into shared memory
         if (Row < N && (ph * TILE_WIDTH + tx) < N)
@@ -36,16 +32,14 @@ __global__ void matmul_tiled_kernel(float* A, float* B, float* C, unsigned int N
         else
             ds_B[ty][tx] = 0.0f;
 
-        __syncthreads();  // Make sure the tile is loaded
+        __syncthreads();
 
-        // Multiply the two tiles together
         for (unsigned int k = 0; k < TILE_WIDTH; k++) {
             Cvalue += ds_A[ty][k] * ds_B[k][tx];
         }
-        __syncthreads();  // Ensure all threads have computed with the current tile
+        __syncthreads();  
     }
 
-    // Write the computed value to global memory
     if (Row < N && Col < N)
         C[Row * N + Col] = Cvalue;
 }
@@ -128,7 +122,7 @@ void matmul_gpu(float* a, float* b, float* c, unsigned int N) {
 }
 
 int main() {
-    unsigned int N = 1024; // Dimension of the square matrices
+    unsigned int N = 1024;
 
     // Allocate memory on CPU for matrices A, B, and C
     float *a = (float*)malloc(N * N * sizeof(float));
