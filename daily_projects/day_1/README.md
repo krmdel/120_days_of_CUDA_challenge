@@ -30,7 +30,7 @@ Compiling the code:
 
 <pre> nvcc vector_addition.cu -o vecadd </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> vecadd </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:

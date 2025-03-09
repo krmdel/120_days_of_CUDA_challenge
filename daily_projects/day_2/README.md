@@ -33,7 +33,7 @@ Compiling the code:
 
 <pre> nvcc rgb2gray.cu -o rgb2gray </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> rgb2gray </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:
@@ -52,7 +52,7 @@ Compiling the code:
 
 <pre> nvcc blur.cu -o blur </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> blur </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:

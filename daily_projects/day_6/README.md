@@ -36,7 +36,7 @@ Compiling the code:
 
 <pre> nvcc matmul_tiled_sync.cu -o matmultiled </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> matmultiledsync </pre>
 
 The code was executed on the NVIDIA GeForce RTX 3080Ti Laptop GPU - 16 GB. The output of the code is as follows:

@@ -29,4 +29,4 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 7
 - Lecture 8 of GPU Computing by Dr. Izzat El Hajj
-- Implementation matrix multiplication with memory coalescing and thread coarsening
+- Implementation of matrix multiplication with memory coalescing and thread coarsening in CUDA

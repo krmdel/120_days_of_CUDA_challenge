@@ -52,7 +52,7 @@ Compiling the code:
 <pre> nvcc matmulunequaldim.cu -o matmuluneq </pre>
 <pre> nvcc resource.cu -o resource </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> matmuleq </pre>
 <pre> matmuluneq </pre>
 <pre> resource </pre>

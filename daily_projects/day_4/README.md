@@ -58,7 +58,7 @@ Compiling the code:
 
 <pre> nvcc matmul_tiled_equaldim.cu -o matmultileduneq </pre>
 
-Runnung the code after compiling: 
+Running the code after compiling: 
 <pre> matmultiledeq </pre>  
 
 <pre> matmultileduneq </pre>
