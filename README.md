@@ -26,3 +26,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 6
 - Lecture 7 of GPU Computing by Dr. Izzat El Hajj
 - Implementation and comparison of tiled matrix multiplication with thread sync between CPU and GPU in CUDA
+
+## Day 7
+- Lecture 8 of GPU Computing by Dr. Izzat El Hajj
+- Implementation matrix multiplication with memory coalescing and thread coarsening
