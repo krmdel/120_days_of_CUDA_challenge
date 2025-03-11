@@ -34,3 +34,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 8
 - Lecture 9 of GPU Computing by Dr. Izzat El Hajj
 - Implementation and comparison of profiling for vector addition and matrix multiplication in CUDA
+
+## Day 9
+- Lecture 10 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of convolution in CUDA
