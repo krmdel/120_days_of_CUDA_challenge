@@ -38,3 +38,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 9
 - Lecture 10 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of convolution in CUDA
+
+## Day 10
+- Lecture 11 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of stencil in CUDA
