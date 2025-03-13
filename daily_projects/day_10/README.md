@@ -32,6 +32,13 @@ for (int i = 1; i < n; i++) {
     output[i] = f(output[i-1], input[i-1]);
 }
 
+- Segmented scan: 
+
+    - Similar to reduction, threads must synchronize to perform scan, cannot synchronize across threads in different blocks.
+    - Solution is segmented scan (or hierarchical scan): every thread blocks scan a segment, scan the partial sums, update the segments based on partial sums
+
+- Optimizations: shared memory and double buffering (element is read by one thread and written by another thread, needs to make sure that thread writing does not interfere with the thread reading)
+
 4) Implementation:
 
 The code performs convolution operation over constant memory on the GPU

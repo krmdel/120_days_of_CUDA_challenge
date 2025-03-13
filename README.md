@@ -42,3 +42,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 10
 - Lecture 11 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of stencil in CUDA
+
+## Day 11
+- Lecture 12 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of reduction for summation in CUDA
