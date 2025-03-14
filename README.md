@@ -46,3 +46,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 11
 - Lecture 12 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of reduction for summation in CUDA
+
+## Day 12
+- Lecture 13 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of optimized reduction for summation in CUDA

@@ -43,7 +43,7 @@ for (int i = 1; i < n; i++) {
 
 The code performs convolution operation over constant memory on the GPU
 
-Compiling the code for vector addition:  
+Compiling the code:  
 
 <pre>nvcc .\stencil.cu -o stencil</pre>
 

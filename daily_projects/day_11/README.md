@@ -36,7 +36,7 @@ Lecture 12: https://youtu.be/CcwdWP44aFE?si=7VZLbqBsKuxFHoDG
 
 The code performs reduction operation on the GPU
 
-Compiling the code for vector addition:  
+Compiling the code:  
 
 <pre>nvcc .\reduction.cu -o reduction</pre>
 
@@ -44,11 +44,11 @@ Running the code after compiling:
 <pre> reduction </pre>
 
 <pre>CPU Sum: 16777312.0000
-GPU Sum: 16793994.0000
+GPU Sum: 16925198.0000
 
 Timing Comparison:
-CPU time: 34.964 ms
-GPU copy to device: 8.313 ms
-GPU kernel time: 1.402 ms
-GPU copy from device: 1.476 ms
-GPU total time: 11.450 ms</pre>
+CPU Time: 40.918 ms
+GPU copy to GPU Time: 8.985 ms
+GPU Kernel Time: 1.204 ms
+GPU copy from GPU Time: 0.054 ms
+GPU Total Time: 10.243 ms</pre>

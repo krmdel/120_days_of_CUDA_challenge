@@ -28,7 +28,7 @@ Lecture 10: https://youtu.be/voFt2e2QXtA?si=GGJLQzbAf0WcgWVL
 
 The code performs convolution operation over constant memory on the GPU
 
-Compiling the code for vector addition:  
+Compiling the code:  
 
 <pre>nvcc convolution.cu -o conv</pre>
 
