@@ -50,3 +50,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 12
 - Lecture 13 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of optimized reduction for summation in CUDA
+
+## Day 13
+- Lecture 14 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of scan using Kogge-Stone method in CUDA
