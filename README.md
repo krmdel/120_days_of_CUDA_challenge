@@ -54,3 +54,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 13
 - Lecture 14 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of scan using Kogge-Stone method in CUDA
+
+## Day 14
+- Lecture 15 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of scan using Brent-Kung method in CUDA
