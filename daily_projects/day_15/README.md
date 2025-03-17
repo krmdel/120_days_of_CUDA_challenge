@@ -42,9 +42,9 @@ Matrix:
 0 2 8 0  
 0 0 0 6  
 
-Row: 0 0 1 1 1 2 2 3
-Col: 0 1 0 2 3 1 2 3
-Val: 1 7 5 3 9 2 8 6
+Row: 0 0 1 1 1 2 2 3  
+Col: 0 1 0 2 3 1 2 3  
+Val: 1 7 5 3 9 2 8 6  
 
 - Parallelization approach: Assign one thread to nonzero element
 - Multiple threads can write to the same location in the output vector --> need atomic operations
@@ -69,9 +69,9 @@ Matrix:
 0 2 8 0  
 0 0 0 6  
 
-RowPtrs: 0 2 5 7 (8)
-ColInd: 0 1 0 2 3 1 2 3
-Val: 1 7 5 3 9 2 8 6
+RowPtrs: 0 2 5 7 (8)  
+ColInd: 0 1 0 2 3 1 2 3  
+Val: 1 7 5 3 9 2 8 6  
 
 Paralellization approach: Assign one thread to loop over each input row sequentially and update corresponding output element
 
