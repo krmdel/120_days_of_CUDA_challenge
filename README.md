@@ -58,3 +58,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 14
 - Lecture 15 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of scan using Brent-Kung method in CUDA
+
+## Day 15
+- Lecture 16 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of histogram calculation with atomic operations and privatization in CUDA
