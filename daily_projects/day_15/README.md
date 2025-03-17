@@ -37,10 +37,10 @@ Lecture 16: https://youtu.be/H6YGKNukGMo?si=o8ihOVdvaY19rrUK
     
 Matrix:
 
-1 7 0 0
-5 0 3 9
-0 2 8 0
-0 0 0 6
+1 7 0 0  
+5 0 3 9  
+0 2 8 0  
+0 0 0 6  
 
 Row: 0 0 1 1 1 2 2 3
 Col: 0 1 0 2 3 1 2 3
@@ -64,10 +64,10 @@ Disadvantages of COO:
 
 Matrix:
 
-1 7 0 0
-5 0 3 9
-0 2 8 0
-0 0 0 6
+1 7 0 0  
+5 0 3 9  
+0 2 8 0  
+0 0 0 6  
 
 RowPtrs: 0 2 5 7 (8)
 ColInd: 0 1 0 2 3 1 2 3
