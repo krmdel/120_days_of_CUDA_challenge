@@ -27,7 +27,7 @@ Column:
 1 2 *       
 3 * *       
 
-Value:
+Value:  
 1 7 *  
 5 3 9  
 2 8 *  
