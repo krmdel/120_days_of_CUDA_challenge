@@ -24,4 +24,13 @@ Compiling the code:
 Running the code after compiling: 
 <pre> merge </pre>
 
-<pre></pre>
+<pre>==== Baseline Kernel ====
+CPU->GPU Copy Time: 0.06144 ms
+Kernel Execution Time: 1.01171 ms
+GPU->CPU Copy Time: 0.046176 ms
+Total GPU Baseline Merge Time: 1.11933 ms
+==== Optimized Kernel ====
+CPU->GPU Copy Time: 0.033088 ms
+Kernel Execution Time: 0.063488 ms
+GPU->CPU Copy Time: 0.047424 ms
+Total GPU Optimized Merge Time: 0.144 ms</pre>
