@@ -62,3 +62,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 15
 - Lecture 16 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of histogram calculation with atomic operations and privatization in CUDA
+
+## Day 16
+- Lecture 17 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of merge in CUDA
