@@ -21,11 +21,17 @@ Matrix:
 0 2 8 0  
 0 0 0 6  
 
-Column:     Value:
-0 1 *       1 7 *  
-0 2 3       5 3 9  
-1 2 *       2 8 *  
-3 * *       6 * *  
+Column:     
+0 1 *       
+0 2 3       
+1 2 *       
+3 * *       
+
+Value:
+1 7 *  
+5 3 9  
+2 8 *  
+6 * *  
 
 - store padded array of nonzeros in column major order:  
 
