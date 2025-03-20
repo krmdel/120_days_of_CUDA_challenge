@@ -70,3 +70,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 17
 - Lecture 18 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of sort in CUDA
+
+## Day 18
+- Lecture 19 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of Sparse Matrix-Vector Multiplication (SpMV) for COO/CSR in CUDA
