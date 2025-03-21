@@ -74,3 +74,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 18
 - Lecture 19 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of Sparse Matrix-Vector Multiplication (SpMV) using Coordinate Format (COO) and Compressed Sparse Row (CSR) in CUDA
+
+## Day 19
+- Lecture 20 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of Sparse Matrix-Vector Multiplication (SpMV) using ELLPACK (ELL) and Jagged Diagonal Storage (JDS) in CUDA
