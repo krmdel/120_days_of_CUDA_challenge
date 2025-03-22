@@ -81,4 +81,4 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 20
 - Lecture 20 of GPU Computing by Dr. Izzat El Hajj
-- Implementation of Graph Processing using vertex and edge-centric Breadth-first search (BFS) in CUDA
+- Implementation of Graph Processing using vertex and edge-centric breadth-first search (BFS) in CUDA
