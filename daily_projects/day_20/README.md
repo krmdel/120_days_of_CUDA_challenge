@@ -57,7 +57,7 @@ Lecture 21: https://youtu.be/aNchuoFCgSs?si=rnV6lqbgNUW2X0Na
 
 - Pipeline Vector Addition:
 
-![pipeline](images/pipeline.png)
+![pipeline](images/pipeline.jpg)
 
 - Streams and Asynchronous Copies:
     - Parallelism between grids and memory copies can be achieved using streams
