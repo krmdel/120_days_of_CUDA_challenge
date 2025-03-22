@@ -78,3 +78,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 19
 - Lecture 20 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of Sparse Matrix-Vector Multiplication (SpMV) using ELLPACK (ELL) and Jagged Diagonal Storage (JDS) in CUDA
+
+## Day 20
+- Lecture 20 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of Graph Processing using vertex and edge-centric Breadth-first search (BFS) in CUDA
