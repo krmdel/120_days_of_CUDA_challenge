@@ -86,3 +86,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 21
 - Lecture 22 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of optimized graph processing using single/multi-block vertex centric Breadth-First Search (BFS) in CUDA
+
+## Day 22
+- Lecture 23 of GPU Computing by Dr. Izzat El Hajj
+- Implementation of reduction using intrawarp synchronization in CUDA
