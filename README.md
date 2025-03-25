@@ -90,3 +90,6 @@ Here is my 120 days of CUDA challenge!
 ## Day 22
 - Lecture 23 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of reduction using intrawarp synchronization in CUDA
+
+## Day 23
+- Implementation of pinned memory and streams in CUDA
