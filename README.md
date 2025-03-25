@@ -92,4 +92,4 @@ Here is my 120 days of CUDA challenge!
 - Implementation of reduction using intrawarp synchronization in CUDA
 
 ## Day 23
-- Implementation of pinned memory and streams in CUDA
+- Implementation of vector addition using pinned memory and streams (asynchoronus copies) in CUDA
