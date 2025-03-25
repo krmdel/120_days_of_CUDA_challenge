@@ -6,7 +6,7 @@ The code performs vector addition using pinned memory and streams on the GPU
 
 Compiling the code:  
 
-<pre>nvcc pinnedmemery_streams.cu -o pinstream</pre>
+<pre>nvcc pinnedmemory_streams.cu -o pinstream</pre>
 
 Running the code after compiling: 
 <pre> pinstream </pre>
