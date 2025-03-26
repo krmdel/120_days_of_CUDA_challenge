@@ -93,3 +93,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 23
 - Implementation of vector addition using pinned memory and streams (asynchoronus copies) in CUDA
+
+## Day 24
+- Implementation for dynamic parallelism in CUDA
