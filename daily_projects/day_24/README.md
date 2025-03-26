@@ -1,8 +1,8 @@
-Day 24: Implementation for dynamic parallelism in CUDA
+Day 24: Implementation of dynamic parallelism in CUDA
 
 1) Implementation:
 
-The code performs vector addition using pinned memory and streams on the GPU
+The code performs dynamic parallelism to demonstrate how dynamic parallelism can be used to launch child kernels directly from device code on the GPU
 
 Compiling the code:  
 
