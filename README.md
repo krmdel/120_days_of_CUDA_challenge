@@ -99,3 +99,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 25
 - Implementation of forward pass for linear regression in CUDA
+
+## Day 26
+- Implementation of backward pass and updating weights for linear regression in CUDA
