@@ -96,3 +96,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 24
 - Implementation of dynamic parallelism in CUDA
+
+## Day 25
+- Implementation of forward pass for linear regression in CUDA
