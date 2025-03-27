@@ -1,6 +1,6 @@
 Day 25: Implementation of forward pass for linear regression in CUDA
 
-1) Daily tutorial:
+1) Summary of the daily tutorial:
 
 - The code performs the forward pass for linear regression in CUDA
 - Forward pass of a linear regression model is implemented using CUDA:
