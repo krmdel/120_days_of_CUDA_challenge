@@ -3,7 +3,7 @@ Day 24: Implementation of forward pass for linear regression in CUDA
 1) Daily tutorial:
 
 - The code performs the forward pass for linear regression in CUDA
-- Gorward pass of a linear regression model is implemented using CUDA:
+- Forward pass of a linear regression model is implemented using CUDA:
 
     Parameters:
     X: Input matrix of shape (num_samples, num_features)
@@ -15,7 +15,7 @@ Day 24: Implementation of forward pass for linear regression in CUDA
 
     CUDA kernel (linear_forward): Each thread computes one prediction: y = Xw + b for a sample (idx to identify which sample each thread is processing).
 
-Note that CPU is faster than GPU for sample size 1000 and feature size 10. However, GPU is significantly faster than CPU for sample size 10000 and feature size 1000. No further optimization such as shared memory access etc. in CUDA is implemented.
+Note that CPU is faster than GPU for sample size 1000 and feature size 10. However, GPU is significantly faster than CPU for sample size 10000 and feature size 1000. No further optimization such as shared memory access etc. in CUDA is implemented yet.
 
 2) Implementation:
 
