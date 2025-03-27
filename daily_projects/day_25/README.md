@@ -1,4 +1,4 @@
-Day 24: Implementation of forward pass for linear regression in CUDA
+Day 25: Implementation of forward pass for linear regression in CUDA
 
 1) Daily tutorial:
 
