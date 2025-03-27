@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
-// forward pass on GPU
+// Forward pass on GPU
 __global__ void linear_forward(float* X, float* w, float* b, float* y_pred, int num_samples, int num_features) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < num_samples) {
@@ -18,7 +18,7 @@ __global__ void linear_forward(float* X, float* w, float* b, float* y_pred, int 
     }
 }
 
-// forward pass on CPU
+// Forward pass on CPU
 void linear_forward_cpu(float* X, float* w, float b, float* y_pred, int num_samples, int num_features) {
     for (int i = 0; i < num_samples; i++) {
         float y = 0.0f;
@@ -31,8 +31,8 @@ void linear_forward_cpu(float* X, float* w, float b, float* y_pred, int num_samp
 }
 
 int main() {
-    const int num_samples = 1000;     // scale up to 100000 or more
-    const int num_features = 10;      // scale up to 1000 or more
+    const int num_samples = 1000;
+    const int num_features = 10;
 
     std::srand(std::time(0));
 
@@ -51,7 +51,7 @@ int main() {
     for (int i = 0; i < num_features; ++i)
         h_w[i] = static_cast<float>(rand()) / RAND_MAX;
 
-    // Generate true values
+    // Generate true values (not groung truth labels)
     linear_forward_cpu(h_X, h_w, h_b, h_y_true, num_samples, num_features);
 
     // GPU memory allocation
@@ -94,7 +94,7 @@ int main() {
         return -1;
     }
 
-    cudaDeviceSynchronize(); // Make sure kernel is finished
+    cudaDeviceSynchronize();
 
     // Copy back result
     cudaEventRecord(start);
