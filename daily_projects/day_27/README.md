@@ -1,4 +1,4 @@
-Day 26: Implementation of logistic regression with mini-batch training and inference in CUDA
+Day 27: Implementation of logistic regression with mini-batch training and inference in CUDA
 
 1) Summary of the daily tutorial:
 
