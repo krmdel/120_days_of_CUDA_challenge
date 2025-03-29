@@ -2,9 +2,29 @@ Day 27: Implementation of logistic regression with mini-batch training and infer
 
 1) Summary of the daily tutorial:
 
+The code performs logistic regression using both GPU and CPU in CUDA. The code trains a binary classifier on synthetic data using mini‑batch gradient descent. The logistic regression model computes predictions with a forward pass that applies the sigmoid activation function, and then updates the model parameters using gradients computed from the binary cross‑entropy loss
+
+- Forward Pass: Each CUDA thread computes one prediction by calculating the linear combination of the input features and weights, adding the bias, and applying the sigmoid function to obtain a probability
+
+- Backward Pass: The gradients for the weights and bias are computed from the binary cross‑entropy loss. Each thread computes the error (difference between prediction and true label) and uses atomic operations to accumulate the gradient contributions
+
+- Weight Update: The computed gradients are used to update the weights and bias using gradient descent with a fixed learning rate
+
+- Synthetic Data Generation: The code generates a synthetic dataset by creating random feature values and computing binary labels using a “true” logistic model (with randomly generated weights and bias). This data is used to train the logistic regression model
+
+- The model uses the sigmoid function
+- The binary cross‑entropy loss is computed
+- GPU Kernels: 
+    - logistic_forward: Computes the forward pass (linear transformation followed by the sigmoid activation) for each mini-batch
+    - compute_gradients: Calculates the gradients of the loss with respect to weights and bias using atomic additions to handle concurrent updates
+    - update_weights: Updates the model parameters using the computed gradients and a fixed learning rate.
+
+- Mini-Batch Training: Both the CPU and GPU implementations process data in mini-batches. For each mini-batch, data is copied from the host to the GPU, the forward pass and gradient computations are executed, and results are copied back to the host to compute loss. This approach allows measuring the individual timings for data transfer and kernel execution. Therefore, execution time can be further optimized
+
 
 2) Implementation:
 
+The code performs mini-batch training and inference of logistic regression on the GPU
 
 Compiling the code:  
 
