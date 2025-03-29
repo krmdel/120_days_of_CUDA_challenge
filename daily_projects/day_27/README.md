@@ -21,6 +21,7 @@ The code performs logistic regression using both GPU and CPU in CUDA. The code t
 
 - Mini-Batch Training: Both the CPU and GPU implementations process data in mini-batches. For each mini-batch, data is copied from the host to the GPU, the forward pass and gradient computations are executed, and results are copied back to the host to compute loss. This approach allows measuring the individual timings for data transfer and kernel execution. Therefore, execution time can be further optimized
 
+Note that training does not seem to be effective as the loss does not decrease significantly. This is likely due to the random nature of the synthetic data. However, training is for demonstration for GPU implementation of logistic regression 
 
 2) Implementation:
 
