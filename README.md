@@ -102,3 +102,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 26
 - Implementation of backward pass with gradient calculations for updating weights of linear regression in CUDA
+
+## Day 27
+- Implementation of logistic regression with mini-batch training and inference in CUDA
