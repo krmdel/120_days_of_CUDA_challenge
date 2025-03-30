@@ -107,4 +107,4 @@ Here is my 120 days of CUDA challenge!
 - Implementation of logistic regression with mini-batch training and inference in CUDA
 
 ## Day 28
-Implementation of multi layer perceptron with forward and backward pass in CUDA
+- Implementation of multi layer perceptron with forward and backward pass in CUDA
