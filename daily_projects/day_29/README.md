@@ -4,10 +4,10 @@ Day 29: Implementation of convolution neural networks in CUDA
 
 The code performs a simple convolutional neural network (CNN) using CUDA. The goal is to demonstrate both CPU and GPU implementations for the forward pass (convolution), gradient computation (backward pass), and weight updates.
 
-- CNN Architecture: 
+- CNN Architecture:
     - Input: A multi-channel image (e.g., 32×32×3)
     - Convolution: A single convolution layer is applied with a kernel size of 3×3 and a stride of 2
-    - Output: The result is a downsampled feature map with dimensions computed as:
+    - Output: The result is a downsampled feature map with dimensions computed as:  
         OUT_HEIGHT = ((IN_HEIGHT - KERNEL_SIZE) / STRIDE + 1)
         OUT_WIDTH = ((IN_WIDTH - KERNEL_SIZE) / STRIDE + 1)
 
