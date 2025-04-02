@@ -11,7 +11,7 @@
 #define IMAGE_HEIGHT        32
 #define IMAGE_CHANNELS      3
 
-//Input (3 channels) projected into 64 channels.
+//Input (3 channels) projected into 64 channels
 #define INIT_OUT_CHANNELS   64
 
 // 3x3 convolution with stride=1 and padding=1
@@ -334,7 +334,7 @@ int main(){
         loss /= RES_FEATURE_SIZE;
         printf("CPU Epoch %d Loss: %f\n", epoch+1, loss);
         
-        // Dummy Backpropagation: compute dummy gradients and update convolution weights
+        // Dummy backpropagation: compute dummy gradients and update convolution weights
         float *d_grad_init = (float*)malloc(RES_FEATURE_SIZE * sizeof(float));
         float *d_grad_res1 = (float*)malloc(RES_FEATURE_SIZE * sizeof(float));
         float *d_grad_res2 = (float*)malloc(RES_FEATURE_SIZE * sizeof(float));
@@ -370,7 +370,7 @@ int main(){
     double cpu_train_time = ((double)(cpu_train_end - cpu_train_start)) / CLOCKS_PER_SEC * 1000.0;
     printf("Total CPU Training Time: %f ms\n", cpu_train_time);
     
-    // CPU Inference
+    // CPU inference
     clock_t cpu_inf_start = clock();
     conv_forward_res_cpu(h_input, h_weight_init, h_init_out,
                          IMAGE_CHANNELS, INIT_OUT_CHANNELS,
@@ -395,7 +395,7 @@ int main(){
     double cpu_inf_time = ((double)(cpu_inf_end - cpu_inf_start)) / CLOCKS_PER_SEC * 1000.0;
     printf("CPU Inference Time: %f ms\n", cpu_inf_time);
     
-    // GPU Memory Allocation
+    // GPU memory allocation
     printf("\nStarting GPU Training for ResNet Block...\n");
     float *d_input, *d_weight_init, *d_weight_res1, *d_weight_res2;
     float *d_init_out, *d_res1_out, *d_bn1_out, *d_relu1_out;
@@ -430,7 +430,7 @@ int main(){
     cudaMemcpy(d_weight_res1, h_weight_res1, weight_res1_size * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_weight_res2, h_weight_res2, weight_res2_size * sizeof(float), cudaMemcpyHostToDevice);
     
-    // Set up grid and block sizes for convolution.
+    // Set up grid and block sizes for convolution
     dim3 blockSizeRes(16, 16, 1);
     dim3 gridSizeRes((IMAGE_WIDTH + blockSizeRes.x - 1) / blockSizeRes.x,
                      (IMAGE_HEIGHT + blockSizeRes.y - 1) / blockSizeRes.y,
@@ -458,7 +458,7 @@ int main(){
     cudaEventRecord(gpu_train_start, 0);
     
     for (int epoch = 0; epoch < NUM_EPOCHS; epoch++){
-        // Forward Pass
+        // Forward pass
         conv_forward_res<<<gridSizeRes, blockSizeRes>>>(d_input, d_weight_init, d_init_out,
                                                         IMAGE_CHANNELS, INIT_OUT_CHANNELS,
                                                         IMAGE_HEIGHT, IMAGE_WIDTH, KERNEL_SIZE, KERNEL_SIZE,
@@ -502,7 +502,7 @@ int main(){
         printf("GPU Epoch %d Loss: %f\n", epoch+1, gpu_loss);
         free(h_gpu_out);
         
-        // Dummy Backpropagation: compute dummy gradients
+        // Dummy backpropagation: compute dummy gradients
         compute_dummy_grad<<<blocks1D, threads1D>>>(d_init_out, d_grad_init, RES_FEATURE_SIZE);
         cudaDeviceSynchronize();
         compute_dummy_grad<<<blocks1D, threads1D>>>(d_res1_out, d_grad_res1, RES_FEATURE_SIZE);
