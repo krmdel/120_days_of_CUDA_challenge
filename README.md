@@ -114,3 +114,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 30
 - Implementation of pooling operations (max/average pooling), batch normalization and dropout for convolutional neural networks in CUDA
+
+## Day 31
+- Implementation of skip connections and ResNet architecture for convolutional neural networks in CUDA
