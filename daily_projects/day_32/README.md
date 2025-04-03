@@ -6,15 +6,16 @@ The code performs a positional encodings (a key component in Transformer archite
 
 For each position pos and dimension j:
 
-For even indices (where \( j = 2i \)):
-\[
-\text{PE}(pos, 2i) = \sin\!\Bigl(pos \cdot \exp\Bigl(-\frac{\log(10000)}{d_{\text{model}}}\cdot i\Bigr)\Bigr)
-\]
+For even indices (where \( j = 2i \)):  
+$$
+\text{PE}(pos, 2i) = \sin\!\Bigl(pos \cdot \exp\!\Bigl(-\frac{\log(10000)}{d_{\text{model}}} \cdot i\Bigr)\Bigr)
+$$
 
-For odd indices (where \( j = 2i+1 \)):
-\[
-\text{PE}(pos, 2i+1) = \cos\!\Bigl(pos \cdot \exp\Bigl(-\frac{\log(10000)}{d_{\text{model}}}\cdot i\Bigr)\Bigr)
-\]
+
+For odd indices (where \( j = 2i+1 \)):  
+$$
+\text{PE}(pos, 2i+1) = \cos\!\Bigl(pos \cdot \exp\!\Bigl(-\frac{\log(10000)}{d_{\text{model}}} \cdot i\Bigr)\Bigr)
+$$
 
 - GPU Kernels: 
     - positional_encoding_kernel: Each thread calculates its global index to determine its corresponding position (pos) and feature dimension (j). It computes an angle based on the position and a scaled term (div_term) derived from the feature index and applies sinf if j is even or cosf if j is odd.
@@ -33,7 +34,7 @@ Running the code after compiling:
 
 <pre> posenc </pre>
 
--  seq_len = 5 / d_model = 5
+-  seq_len = 5 & d_model = 5
 
 <pre>Positional Encoding (shape: 1 x 5 x 5):
 0       1       0       1       0
