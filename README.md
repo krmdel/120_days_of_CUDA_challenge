@@ -121,5 +121,5 @@ Here is my 120 days of CUDA challenge!
 ## Day 32
 - Implementation of positional encoding for transformers in CUDA
 
-## Day 32
+## Day 33
 - Implementation of tokenizer for transformers in CUDA
