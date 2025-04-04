@@ -119,4 +119,7 @@ Here is my 120 days of CUDA challenge!
 - Implementation of skip connections and ResNet architecture for convolutional neural networks in CUDA
 
 ## Day 32
-- Implementation of positional encoding in CUDA
+- Implementation of positional encoding for transformers in CUDA
+
+## Day 32
+- Implementation of tokenizer for transformers in CUDA
