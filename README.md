@@ -123,3 +123,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 33
 - Implementation of tokenizer for transformers in CUDA
+
+## Day 34
+- Implementation of scaled dot-product attention in CUDA
