@@ -4,7 +4,7 @@ Day 34: Implementation of scaled dot-product attention in CUDA
 
 The code performs a scaled dot-product attention mechanism on CUDA. The dot product between the query (Q) and key (K) matrices are calculated and scaled the result by 1/sqrt(d_k), where d_k is the dimension of the key vectors. 
 
-- Attention kernel:
+- Attention kernel:  
   scaled_dot_product_kernel: The CUDA kernel computes the dot product QK^T using a tiled approach. Sub-matrices (tiles) of Q and K are loaded into shared memory to improve performance. Each output element is calculated as:
 
 ```math
