@@ -126,3 +126,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 34
 - Implementation of scaled dot-product attention in CUDA
+
+## Day 35
+- Implementation of multihead attention in CUDA
