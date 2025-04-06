@@ -6,13 +6,13 @@ The code performs multi‑head attention implementation in CUDA that computes sc
 
 ```math
 \text{score}[i,j] = \frac{Q[i,:] \cdot K[j,:]^T}{\sqrt{d_{head}}}
-```
+```  
 
 A softmax is applied over the key dimension to produce normalized attention weights. The softmax scores are then used to weight the corresponding V vectors to produce each head’s output. Finally, the outputs from all heads (concatenated along the feature dimension) are further projected by multiplying with a final weight matrix Wo to yield the final attention output.
 
 - CUDA kernels:  
   - matmul_kernel: This kernel performs tiled matrix multiplication and is used for both the linear projections (to compute Q, K, and V) and the final projection (to compute the output after attention)
-  - compute_scores_kernel: For each head, it computes the dot product between the query and key tiles, scales the result by 1/√(d_head), and stores the score
+  - compute_scores_kernel: For each head, it computes the dot product between the query and key tiles, scales the result by 1/sqrt(d_head), and stores the score
   - softmax_kernel: For each (query, head) pair, it performs a parallel reduction to compute the softmax over the keys
   - weighted_sum_kernel: Using the softmax scores, it computes a weighted sum over V to produce the output of each head
 
