@@ -16,7 +16,7 @@ This tutorial demonstrates a complete transformer encoder block implemented in C
   d_{head} = \frac{d_{model}}{H}
   ```
 
-  - Scaled Dot‑Product Attention: For each head, the attention scores are computed by taking the dot product between queries and keys, and then scaling by (1\sqrt(d_head)):
+  - Scaled Dot‑Product Attention: For each head, the attention scores are computed by taking the dot product between queries and keys, and then scaling by (1/sqrt(d_head)):
   
   ```math
   \text{score}[i,j] = \frac{Q[i,:] \cdot K[j,:]^T}{\sqrt{d_{head}}}
@@ -33,7 +33,7 @@ A softmax is applied over these scores to obtain the attention weights, which ar
 
 - CUDA Kernels:
   - matmul_kernel: Implements tiled matrix multiplication. It is used both for computing the linear projections (i.e., \(Q\), \(K\), \(V\)) and for the feed‑forward layers. Tiling helps to maximize data reuse in shared memory for increased performance.
-  - compute_scores_kernel: Computes the scaled dot‑product between the query and key matrices for each head. The result is scaled by (1\sqrt(d_head)) to stabilize gradients.
+  - compute_scores_kernel: Computes the scaled dot‑product between the query and key matrices for each head. The result is scaled by (1/sqrt(d_head)) to stabilize gradients.
   - softmax_kernel: Applies the softmax function to the computed scores across the key dimension. It uses a parallel reduction to find the maximum value and to sum the exponentials, ensuring numerical stability.
   - weighted_sum_kernel: Uses the softmax scores to compute a weighted sum over the value vectors \(V\) for each head, producing the attention output for that head.
   - add_kernel: Performs element‑wise addition (used for residual connections).
