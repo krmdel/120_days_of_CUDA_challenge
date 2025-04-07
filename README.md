@@ -129,3 +129,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 35
 - Implementation of multihead attention in CUDA
+
+## Day 36
+- Implementation of transformer encoder in CUDA
