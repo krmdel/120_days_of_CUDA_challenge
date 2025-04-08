@@ -10,41 +10,41 @@ The code performs transformer decoder block in CUDA. The decoder consists of thr
   
     - Splitting into Heads: The projected matrices are split into \( H \) heads, where each head has a dimension:
   
-      $$
+      ```math
       d_{\text{head}} = \frac{d_{model}}{H}
-      $$
+      ```
   
     - Scaled Dot‑Product Attention: For each head, the attention scores are computed as:
   
-      $$
-      \text{score}[i,j] = \frac{Q[i, :] \cdot K[j, :]^T}{\sqrt{d_{\text{head}}}}
-      $$
+      ```math
+      \text{score}[i,j] = \frac{Q[i,:] \cdot K[j,:]^T}{\sqrt{d_{head}}}
+      ```
     
       A softmax is then applied over the scores to obtain the attention weights:
     
-      $$
+      ```math
       \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_{\text{head}}}}\right) \times V
-      $$
+      ```
   
-    - Final Projection: The outputs from all heads are concatenated and projected using \( W_{o}^{(\text{self})} \) to yield the self-attention output.
+    - Final Projection: The outputs from all heads are concatenated and projected using ```math W_{o}^{(\text{self})}``` to yield the self-attention output.
 
   - Encoder‑Decoder Attention Block: The queries come from the output of self‑attention after layer normalization, while the keys and values come from the encoder output \( \text{Enc} \).
 
     - Linear Projections: 
     
-      $$
+      ```math
       Q = \text{LN}(\text{SelfAttentionOutput}) \times W_{q}^{(\text{encdec})}
-      $$
+      ```
       
-      $$
+      ```math
       K = \text{Enc} \times W_{k}^{(\text{encdec})},\quad V = \text{Enc} \times W_{v}^{(\text{encdec})}
-      $$
+      ```
   
     - Scaled Dot‑Product Attention: The attention scores are computed as:
   
-      $$
-      \text{score}[i,j] = \frac{Q[i, :] \cdot K[j, :]^T}{\sqrt{d_{\text{head}}}}
-      $$
+      ```math
+      \text{score}[i,j] = \frac{Q[i,:] \cdot K[j,:]^T}{\sqrt{d_{head}}}
+      ```
   
   After applying softmax and computing the weighted sum of values, the result is projected with \( W_{o}^{(\text{encdec})} \).
 
@@ -52,27 +52,27 @@ The code performs transformer decoder block in CUDA. The decoder consists of thr
 
   - First Layer (Expansion):
 
-    $$
+    ```math
     \text{FFN}_1(x) = \text{ReLU}(x \times W_1)
-    $$
+    ```
     
     where the intermediate dimension is typically:
     
-    $$
+    ```math
     d_{ff} = 4 \times d_{model}
-    $$
+    ```
   
 - Second Layer (Projection):
 
-    $$
+    ```math
     \text{FFN}(x) = \text{FFN}_1(x) \times W_2
-    $$
+    ```
 
 - Residual and Normalization: Each block (attention and feed‑forward) is wrapped with a residual connection and layer normalization
   
-  $$
+  ```math
   \text{Output} = \text{LayerNorm}(x + \text{SubLayer}(x))
-  $$
+  ```
 
 
 - CUDA Kernels:
