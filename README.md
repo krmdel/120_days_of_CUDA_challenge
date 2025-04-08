@@ -132,3 +132,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 36
 - Implementation of transformer encoder in CUDA
+
+## Day 37
+- Implementation of transformer decoder in CUDA
