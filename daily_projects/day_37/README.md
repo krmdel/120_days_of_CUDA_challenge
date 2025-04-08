@@ -4,9 +4,9 @@ The code performs transformer decoder block in CUDA. The decoder consists of thr
   - Self‑Attention Block:
     - Linear Projections: The decoder input \( Y \) of shape \((M \times d_{model})\) is first linearly projected into queries, keys, and values using learned weights:
   
-      $$
+      ```math
       Q = Y \times W_{q}^{(\text{self})},\quad K = Y \times W_{k}^{(\text{self})},\quad V = Y \times W_{v}^{(\text{self})}
-      $$
+      ```
   
     - Splitting into Heads: The projected matrices are split into \( H \) heads, where each head has a dimension:
   
