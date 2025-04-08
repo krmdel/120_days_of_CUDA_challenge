@@ -26,12 +26,7 @@ The code performs transformer decoder block in CUDA. The decoder consists of thr
       \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_{\text{head}}}}\right) \times V
       ```
   
-    - Final Projection: The outputs from all heads are concatenated and projected using:
-
-      ```math
-      W_{o}^{(\text{self})}
-      ```  
-      to yield the self-attention output.
+    - Final Projection: The outputs from all heads are concatenated and projected using \(W_{o}^{(\text{self})}\) to yield the self-attention output.
 
   - Encoder‑Decoder Attention Block: The queries come from the output of self‑attention after layer normalization, while the keys and values come from the encoder output \( \text{Enc} \).
 
