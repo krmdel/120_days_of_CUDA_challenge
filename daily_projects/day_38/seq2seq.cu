@@ -1,14 +1,8 @@
 // seq2seq_integration.cu
 // Integrated CUDA and CPU implementation for a simple encoder-decoder (seq2seq) model.
-// This code combines tokenizer (with embedding lookup), positional encoding,
-// a single-layer encoder and a single-layer decoder.
-// The parameters have been set to match your original encoder/decoder implementations:
-//    - Sequence length (M/MAX_TOKENS): 512 tokens
-//    - Model dimension (d_total/EMBEDDING_DIM): 256
-//    - Number of attention heads (H): 4  (with d_head = 256/4 = 64)
-//    - Feed-forward inner dimension (d_ff): 4*256 = 1024
-//
-// Both CPU and GPU inference paths are implemented and timed so you can compare them.
+// This version uses transformer–like dimensions: 512 tokens, 256–dimensional model,
+// 4 attention heads (with d_head = 256/4 = 64) and a feed-forward inner dimension of 1024.
+// Both CPU and GPU inference paths are implemented and timed.
 
 #include <iostream>
 #include <sstream>
@@ -20,7 +14,6 @@
 #include <cstdlib>
 #include <cuda_runtime.h>
 
-// ---------------------------------------------------------------------
 // Error checking macro
 #define CHECK_CUDA(call) {                                 \
     cudaError_t err = call;                                \
@@ -32,24 +25,22 @@
     }                                                      \
 }
 
-// ---------------------------------------------------------------------
-// Global Constants
-// For the tokenizer and embedding lookup:
-const int VOCAB_SIZE    = 4;       // same as before
-const int NUM_SENTENCES = 1;       // assume one input sentence for encoder and one for decoder each
+// Tokenizer and Embedding parameters
+const int VOCAB_SIZE    = 4;
+const int NUM_SENTENCES = 1;       // one sentence each for encoder and decoder
 const int MAX_TOKENS    = 512;     // sequence length
-const int EMBEDDING_DIM = 256;     // same as d_model
+const int EMBEDDING_DIM = 256;     // Also d_model
 
-// For Encoder/Decoder (from your original encoder.cu/decoder.cu):
+// Encoder/Decoder Parameters:
 const int M = MAX_TOKENS;         // sequence length = 512
-const int d_total = 256;          // model (hidden) dimension
+const int d_total = 256;          // model dimension
 const int H = 4;                  // number of attention heads
 const int d_head = d_total / H;   // 64
 const int d_ff = 4 * d_total;     // feed-forward inner dimension = 1024
 
-// ---------------------------------------------------------------------
 // GPU Kernels
-// 1. Embedding Lookup Kernel (for tokenization)
+
+// Embedding lookup kernel
 __global__ void embedding_lookup_kernel(const int* token_ids, 
                                           const float* embedding_matrix, 
                                           float* output, 
@@ -66,7 +57,7 @@ __global__ void embedding_lookup_kernel(const int* token_ids,
     }
 }
 
-// 2. Positional Encoding Kernel
+// Positional encoding kernel
 __global__ void positional_encoding_kernel(float* pe, int seq_len, int d_model) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     int total = seq_len * d_model;
@@ -80,7 +71,7 @@ __global__ void positional_encoding_kernel(float* pe, int seq_len, int d_model) 
     pe[idx] = (j % 2 == 0) ? sinf(angle) : cosf(angle);
 }
 
-// 3. Tiled Matrix Multiplication Kernel (used for linear projections)
+// Tiled matrix multiplication kernel
 #define TILE_WIDTH 16
 __global__ void matmul_kernel(const float *A, const float *B, float *C,
                               int M_mat, int K, int N) {
@@ -111,13 +102,12 @@ __global__ void matmul_kernel(const float *A, const float *B, float *C,
         C[row * N + col] = sum;
 }
 
-// 4. Compute Attention Scores Kernel (for multi-head attention)
-// This kernel computes the scaled dot-product between Q and K.
+// Compute attention scores kernel (multi-head attention)
 __global__ void compute_scores_kernel(const float *Q, const float *K, float *d_scores,
                                         int M_val, int N_val, int H_val, int d_head) {
     int h = blockIdx.z; // head index
-    int row = blockIdx.y * TILE_WIDTH + threadIdx.y; // query index
-    int col = blockIdx.x * TILE_WIDTH + threadIdx.x; // key index
+    int row = blockIdx.y * TILE_WIDTH + threadIdx.y;
+    int col = blockIdx.x * TILE_WIDTH + threadIdx.x;
 
     __shared__ float sQ[TILE_WIDTH][TILE_WIDTH];
     __shared__ float sK[TILE_WIDTH][TILE_WIDTH];
@@ -145,9 +135,9 @@ __global__ void compute_scores_kernel(const float *Q, const float *K, float *d_s
         d_scores[((row * N_val) + col) * H_val + h] = val;
 }
 
-// 5. Softmax Kernel (operating per row of scores)
+// Softmax kernel (per row)
 __global__ void softmax_kernel(float *d_scores, int M_val, int N_val, int H_val) {
-    int idx = blockIdx.x; // one block per (query, head) pair; total blocks = M_val * H_val
+    int idx = blockIdx.x; // one block per (i, h) pair
     int i = idx / H_val;
     int h = idx % H_val;
     int t = threadIdx.x;
@@ -160,10 +150,9 @@ __global__ void softmax_kernel(float *d_scores, int M_val, int N_val, int H_val)
     }
     shmem[t] = thread_max;
     __syncthreads();
-    // Reduction for maximum
     for (int stride = blockDim.x/2; stride > 0; stride /= 2) {
         if(t < stride && (t + stride) < blockDim.x)
-            shmem[t] = fmaxf(shmem[t], shmem[t + stride]);
+            shmem[t] = fmaxf(shmem[t], shmem[t+stride]);
         __syncthreads();
     }
     float max_val = shmem[0];
@@ -176,10 +165,9 @@ __global__ void softmax_kernel(float *d_scores, int M_val, int N_val, int H_val)
     }
     shmem[t] = sum_exp;
     __syncthreads();
-    // Reduction for sum
     for (int stride = blockDim.x/2; stride > 0; stride /= 2) {
         if(t < stride)
-            shmem[t] += shmem[t + stride];
+            shmem[t] += shmem[t+stride];
         __syncthreads();
     }
     float total_exp = shmem[0];
@@ -188,7 +176,7 @@ __global__ void softmax_kernel(float *d_scores, int M_val, int N_val, int H_val)
     }
 }
 
-// 6. Weighted Sum Kernel: Computes attention output = scores * V.
+// Weighted sum kernel: computes attention output = scores * V
 __global__ void weighted_sum_kernel(const float *d_scores, const float *V, float *O,
                                       int M_val, int N_val, int H_val, int d_head) {
     int h = blockIdx.z;
@@ -205,21 +193,21 @@ __global__ void weighted_sum_kernel(const float *d_scores, const float *V, float
     }
 }
 
-// 7. Element-wise Addition Kernel: C = A + B.
+// Element-wise addition kernel: C = A + B
 __global__ void add_kernel(const float *A, const float *B, float *C, int total_elements) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if(idx < total_elements)
         C[idx] = A[idx] + B[idx];
 }
 
-// 8. ReLU Activation Kernel.
+// ReLU activation kernel
 __global__ void relu_kernel(float *A, int total_elements) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if(idx < total_elements && A[idx] < 0)
         A[idx] = 0;
 }
 
-// 9. Layer Normalization Kernel (per row normalization).
+// Layer normalization kernel (per row normalization)
 __global__ void layer_norm_kernel(const float* input, float* output, int M_val, int N_val, float epsilon) {
     int row = blockIdx.x; // one block per row
     if(row < M_val) {
@@ -230,7 +218,7 @@ __global__ void layer_norm_kernel(const float* input, float* output, int M_val, 
             sum += input[row * N_val + j];
         shmem[tid] = sum;
         __syncthreads();
-        for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
+        for (int stride = blockDim.x/2; stride > 0; stride /= 2) {
             if(tid < stride)
                 shmem[tid] += shmem[tid + stride];
             __syncthreads();
@@ -244,7 +232,7 @@ __global__ void layer_norm_kernel(const float* input, float* output, int M_val, 
         }
         shmem[tid] = var_sum;
         __syncthreads();
-        for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
+        for (int stride = blockDim.x/2; stride > 0; stride /= 2) {
             if(tid < stride)
                 shmem[tid] += shmem[tid + stride];
             __syncthreads();
@@ -258,14 +246,15 @@ __global__ void layer_norm_kernel(const float* input, float* output, int M_val, 
     }
 }
 
-// ---------------------------------------------------------------------
-// CPU Utility Functions
-// CPU Tokenizer: splits sentences by whitespace; pads to MAX_TOKENS.
+
+// CPU Implementation
+
+// Tokenizer: splits sentences by whitespace and pads to MAX_TOKENS
 void cpu_tokenizer(const std::vector<std::string>& sentences,
                    const std::unordered_map<std::string,int>& vocab,
                    std::vector<int>& token_ids) {
     int num_sentences = sentences.size();
-    token_ids.assign(num_sentences * MAX_TOKENS, -1); // pad with -1
+    token_ids.assign(num_sentences * MAX_TOKENS, -1);
     for (int i = 0; i < num_sentences; i++) {
         std::istringstream iss(sentences[i]);
         std::string token;
@@ -280,7 +269,7 @@ void cpu_tokenizer(const std::vector<std::string>& sentences,
     }
 }
 
-// CPU Embedding Lookup: similar to the GPU kernel.
+// Embedding lookup
 void cpu_embedding_lookup(const std::vector<int>& token_ids,
                           const std::vector<float>& embedding_matrix,
                           std::vector<float>& output, int total_tokens, int embedding_dim) {
@@ -296,7 +285,7 @@ void cpu_embedding_lookup(const std::vector<int>& token_ids,
     }
 }
 
-// CPU Positional Encoding
+// Positional encoding
 void cpu_positional_encoding(std::vector<float>& pe, int seq_len, int d_model) {
     pe.resize(seq_len * d_model);
     for (int pos = 0; pos < seq_len; pos++){
@@ -309,7 +298,7 @@ void cpu_positional_encoding(std::vector<float>& pe, int seq_len, int d_model) {
     }
 }
 
-// Naïve CPU Matrix Multiplication (A [M x K] * B [K x N] = C [M x N])
+// Matrix multiplication
 void cpu_matmul(const std::vector<float>& A, const std::vector<float>& B,
                 std::vector<float>& C, int M_mat, int K, int N) {
     C.resize(M_mat * N, 0.0f);
@@ -324,10 +313,9 @@ void cpu_matmul(const std::vector<float>& A, const std::vector<float>& B,
     }
 }
 
-// CPU Multi-Head Attention (single-head version extended over H heads)
+// Multi-head attention
 void cpu_multi_head_attention(const float *Q, const float *K, const float *V,
                               float *O, int M_val, int N_val, int H_val, int d_head) {
-    // For each head h, for each query i, compute attention over N keys
     for (int h = 0; h < H_val; h++){
         for (int i = 0; i < M_val; i++){
             std::vector<float> scores(N_val, 0.0f);
@@ -364,14 +352,14 @@ void cpu_multi_head_attention(const float *Q, const float *K, const float *V,
     }
 }
 
-// CPU Element-wise Addition
+// Element-wise addition
 void cpu_add(const float *A, const float *B, float *C, int total_elements) {
     for (int i = 0; i < total_elements; i++){
         C[i] = A[i] + B[i];
     }
 }
 
-// CPU ReLU Activation
+// ReLU activation
 void cpu_relu(float *A, int total_elements) {
     for (int i = 0; i < total_elements; i++){
         if (A[i] < 0)
@@ -379,7 +367,7 @@ void cpu_relu(float *A, int total_elements) {
     }
 }
 
-// CPU Layer Normalization (per row normalization)
+// Layer normalization
 void cpu_layer_norm(const float* input, float* output, int M_val, int N_val, float epsilon) {
     for (int i = 0; i < M_val; i++){
         float sum = 0.0f;
@@ -400,9 +388,7 @@ void cpu_layer_norm(const float* input, float* output, int M_val, int N_val, flo
     }
 }
 
-// ---------------------------------------------------------------------
-// CPU Encoder Implementation
-// Applies linear projections, multi-head self-attention and a feed-forward network.
+// Encoder
 void cpu_encoder(const std::vector<float>& X, std::vector<float>& output,
                  const std::vector<float>& Wq, const std::vector<float>& Wk,
                  const std::vector<float>& Wv, const std::vector<float>& Wo,
@@ -439,9 +425,7 @@ void cpu_encoder(const std::vector<float>& X, std::vector<float>& output,
     output = ln2;
 }
 
-// ---------------------------------------------------------------------
-// CPU Decoder Implementation
-// A simplified one-layer decoder with self-attention, encoder-decoder attention, and feed-forward network.
+// Decoder
 void cpu_decoder(const std::vector<float>& Y, const std::vector<float>& enc_out,
                  std::vector<float>& output,
                  const std::vector<float>& Wq_self, const std::vector<float>& Wk_self,
@@ -449,7 +433,6 @@ void cpu_decoder(const std::vector<float>& Y, const std::vector<float>& enc_out,
                  const std::vector<float>& Wq_encdec, const std::vector<float>& Wk_encdec,
                  const std::vector<float>& Wv_encdec, const std::vector<float>& Wo_encdec,
                  const std::vector<float>& W1, const std::vector<float>& W2) {
-    // Self-Attention Block
     std::vector<float> Q_self, K_self, V_self;
     cpu_matmul(Y, Wq_self, Q_self, M, d_total, d_total);
     cpu_matmul(Y, Wk_self, K_self, M, d_total, d_total);
@@ -465,72 +448,62 @@ void cpu_decoder(const std::vector<float>& Y, const std::vector<float>& enc_out,
     std::vector<float> ln_self(M * d_total, 0.0f);
     cpu_layer_norm(add_self.data(), ln_self.data(), M, d_total, 1e-5);
 
-    // Encoder-Decoder Attention Block
     std::vector<float> Q_encdec, K_encdec, V_encdec;
     cpu_matmul(ln_self, Wq_encdec, Q_encdec, M, d_total, d_total);
     cpu_matmul(enc_out,    Wk_encdec, K_encdec, M, d_total, d_total);
     cpu_matmul(enc_out,    Wv_encdec, V_encdec, M, d_total, d_total);
+
     std::vector<float> attn_encdec(M * d_total, 0.0f);
     cpu_multi_head_attention(Q_encdec.data(), K_encdec.data(), V_encdec.data(), attn_encdec.data(), M, M, H, d_head);
+
     std::vector<float> MHA_encdec(M * d_total, 0.0f);
     cpu_matmul(attn_encdec, Wo_encdec, MHA_encdec, M, d_total, d_total);
+
     std::vector<float> add_encdec(M * d_total, 0.0f);
     cpu_add(ln_self.data(), MHA_encdec.data(), add_encdec.data(), M * d_total);
+
     std::vector<float> ln_encdec(M * d_total, 0.0f);
     cpu_layer_norm(add_encdec.data(), ln_encdec.data(), M, d_total, 1e-5);
 
-    // Feed-Forward Network Block
     std::vector<float> ffn1(M * d_ff, 0.0f);
     cpu_matmul(ln_encdec, W1, ffn1, M, d_total, d_ff);
     cpu_relu(ffn1.data(), M * d_ff);
     std::vector<float> ffn2(M * d_total, 0.0f);
     cpu_matmul(ffn1, W2, ffn2, M, d_ff, d_total);
+
     std::vector<float> add_ffn(M * d_total, 0.0f);
     cpu_add(ln_encdec.data(), ffn2.data(), add_ffn.data(), M * d_total);
+
     std::vector<float> ln_dec(M * d_total, 0.0f);
     cpu_layer_norm(add_ffn.data(), ln_dec.data(), M, d_total, 1e-5);
 
     output = ln_dec;
 }
-
-// ---------------------------------------------------------------------
-// Main Function: Full integration of tokenizer, positional encoding, encoder and decoder.
-// The program runs both CPU and GPU inference for comparison.
 int main() {
-    // -------------------------
-    // 1. Tokenization
-    // For demonstration, we use one short sentence for encoder and one for decoder.
+    // Tokenization on CPU
     std::vector<std::string> encoder_sentences = {"hello world"};
     std::vector<std::string> decoder_sentences = {"cuda programming"};
     std::unordered_map<std::string,int> vocab = { {"hello", 0}, {"world", 1}, {"cuda", 2}, {"programming", 3} };
-
     std::vector<int> encoder_token_ids, decoder_token_ids;
     cpu_tokenizer(encoder_sentences, vocab, encoder_token_ids);
     cpu_tokenizer(decoder_sentences, vocab, decoder_token_ids);
     int total_tokens_enc = NUM_SENTENCES * MAX_TOKENS;
     int total_tokens_dec = NUM_SENTENCES * MAX_TOKENS;
 
-    // -------------------------
-    // 2. Embedding Lookup
-    // Create an embedding matrix for the vocabulary of size VOCAB_SIZE x EMBEDDING_DIM.
-    // For reproducibility we fill with a fixed pattern.
+    // Embedding Lookup on CPU
     std::vector<float> embedding_matrix(VOCAB_SIZE * EMBEDDING_DIM);
     for (int i = 0; i < VOCAB_SIZE; i++){
         for (int j = 0; j < EMBEDDING_DIM; j++){
             embedding_matrix[i * EMBEDDING_DIM + j] = static_cast<float>((i*17 + j + 1) % 100) / 100.0f;
         }
     }
-
-    // CPU embedding lookup for encoder and decoder tokens.
     std::vector<float> enc_embeddings, dec_embeddings;
     cpu_embedding_lookup(encoder_token_ids, embedding_matrix, enc_embeddings, total_tokens_enc, EMBEDDING_DIM);
     cpu_embedding_lookup(decoder_token_ids, embedding_matrix, dec_embeddings, total_tokens_dec, EMBEDDING_DIM);
 
-    // -------------------------
-    // 3. Positional Encoding: Compute for a sequence length of MAX_TOKENS and add to embeddings.
+    // Positional encoding and add to embeddings
     std::vector<float> pos_enc;
     cpu_positional_encoding(pos_enc, MAX_TOKENS, EMBEDDING_DIM);
-    // Add positional encoding (broadcast across sentences)
     for (int i = 0; i < total_tokens_enc; i++){
         for (int j = 0; j < EMBEDDING_DIM; j++){
             enc_embeddings[i * EMBEDDING_DIM + j] += pos_enc[(i % MAX_TOKENS) * EMBEDDING_DIM + j];
@@ -542,22 +515,17 @@ int main() {
         }
     }
     
-    // -------------------------
-    // 4. Initialize Encoder and Decoder Weights
-    // For encoder: weights for Q, K, V, final projection (Wo), and feed-forward layers (W1, W2).
+    // Initialize encoder and decoder weights
     int weight_size = d_total * d_total;
     int weight_ff_size = d_total * d_ff;
     int weight_ff2_size = d_ff * d_total;
     std::vector<float> Wq_enc(weight_size), Wk_enc(weight_size), Wv_enc(weight_size), Wo_enc(weight_size);
     std::vector<float> W1_enc(weight_ff_size), W2_enc(weight_ff2_size);
-    // For decoder: similarly, for self-attention and encoder-decoder attention.
     std::vector<float> Wq_dec_self(weight_size), Wk_dec_self(weight_size),
                        Wv_dec_self(weight_size), Wo_dec_self(weight_size);
     std::vector<float> Wq_dec_encdec(weight_size), Wk_dec_encdec(weight_size),
                        Wv_dec_encdec(weight_size), Wo_dec_encdec(weight_size);
     std::vector<float> W1_dec(weight_ff_size), W2_dec(weight_ff2_size);
-
-    // Initialize weights with a fixed pattern.
     for (int i = 0; i < weight_size; i++){
         Wq_enc[i] = static_cast<float>((i + 2) % 100) / 100.0f;
         Wk_enc[i] = static_cast<float>((i + 3) % 100) / 100.0f;
@@ -581,7 +549,6 @@ int main() {
         W2_dec[i] = static_cast<float>((i + 12) % 100) / 100.0f;
     }
 
-    // -------------------------
     // 5. CPU Inference
     auto cpu_start = std::chrono::high_resolution_clock::now();
     std::vector<float> enc_out_cpu;
@@ -595,15 +562,7 @@ int main() {
     double cpu_time = std::chrono::duration<double, std::milli>(cpu_end - cpu_start).count();
     std::cout << "CPU Total Inference Time: " << cpu_time << " ms" << std::endl;
 
-    // -------------------------
     // 6. GPU Inference
-    // For brevity the GPU implementation allocates device buffers for:
-    //     - Embedding lookup and positional encoding for inputs (encoder and decoder)
-    //     - Encoder weights and intermediate buffers
-    //     - Decoder weights and intermediate buffers
-    // Then launches kernels that mimic the CPU pipeline.
-    // We time the Host-to-Device (H2D) copy time, Kernel execution, and Device-to-Host (D2H) copy time.
-
     cudaEvent_t start_total, stop_total;
     cudaEvent_t start_h2d, stop_h2d;
     cudaEvent_t start_kernel, stop_kernel;
@@ -618,7 +577,7 @@ int main() {
     CHECK_CUDA(cudaEventCreate(&stop_d2h));
     CHECK_CUDA(cudaEventRecord(start_total, 0));
 
-    // (a) Copy embeddings and weights to GPU.
+    // Copy embeddings and weights to GPU
     float *d_enc_embed, *d_dec_embed;
     int embed_bytes = total_tokens_enc * EMBEDDING_DIM * sizeof(float);
     int dec_embed_bytes = total_tokens_dec * EMBEDDING_DIM * sizeof(float);
@@ -627,7 +586,7 @@ int main() {
     CHECK_CUDA(cudaEventRecord(start_h2d, 0));
     CHECK_CUDA(cudaMemcpy(d_enc_embed, enc_embeddings.data(), embed_bytes, cudaMemcpyHostToDevice));
     CHECK_CUDA(cudaMemcpy(d_dec_embed, dec_embeddings.data(), dec_embed_bytes, cudaMemcpyHostToDevice));
-    // (For simplicity, we assume the weights are reused on the GPU and allocate buffers for them.)
+    // Allocate and copy encoder weights
     float *d_Wq_enc, *d_Wk_enc, *d_Wv_enc, *d_Wo_enc, *d_W1_enc, *d_W2_enc;
     CHECK_CUDA(cudaMalloc(&d_Wq_enc, weight_size * sizeof(float)));
     CHECK_CUDA(cudaMalloc(&d_Wk_enc, weight_size * sizeof(float)));
@@ -641,7 +600,7 @@ int main() {
     CHECK_CUDA(cudaMemcpy(d_Wo_enc, Wo_enc.data(), weight_size * sizeof(float), cudaMemcpyHostToDevice));
     CHECK_CUDA(cudaMemcpy(d_W1_enc, W1_enc.data(), weight_ff_size * sizeof(float), cudaMemcpyHostToDevice));
     CHECK_CUDA(cudaMemcpy(d_W2_enc, W2_enc.data(), weight_ff2_size * sizeof(float), cudaMemcpyHostToDevice));
-    // Similarly allocate and copy decoder weights.
+    // Allocate and copy decoder weights
     float *d_Wq_dec_self, *d_Wk_dec_self, *d_Wv_dec_self, *d_Wo_dec_self;
     float *d_Wq_dec_encdec, *d_Wk_dec_encdec, *d_Wv_dec_encdec, *d_Wo_dec_encdec;
     float *d_W1_dec, *d_W2_dec;
@@ -670,73 +629,87 @@ int main() {
     float h2d_time;
     CHECK_CUDA(cudaEventElapsedTime(&h2d_time, start_h2d, stop_h2d));
 
-    // (b) GPU Encoder Processing
-    // Allocate device buffers for encoder intermediate results.
+    // GPU Encoder Processing
     size_t input_size_enc = M * d_total * sizeof(float);
     size_t proj_size_enc = M * d_total * sizeof(float);
     size_t scores_size_enc = M * M * H * sizeof(float);
     size_t ffn1_size_enc = M * d_ff * sizeof(float);
+    float *d_input, *d_Wq, *d_Wk, *d_Wv, *d_Wo;
+    float *d_Q, *d_K, *d_V, *d_scores, *d_O;
+    float *d_MHA, *d_add1, *d_ln1, *d_ffn1, *d_ffn2, *d_add2, *d_ln2;
+    float *d_W1, *d_W2;
+    CHECK_CUDA(cudaMalloc(&d_input, input_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_Wq, weight_size * sizeof(float)));
+    CHECK_CUDA(cudaMalloc(&d_Wk, weight_size * sizeof(float)));
+    CHECK_CUDA(cudaMalloc(&d_Wv, weight_size * sizeof(float)));
+    CHECK_CUDA(cudaMalloc(&d_Wo, weight_size * sizeof(float)));
+    CHECK_CUDA(cudaMalloc(&d_Q, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_K, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_V, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_scores, scores_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_O, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_MHA, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_add1, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_ln1, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_ffn1, ffn1_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_ffn2, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_add2, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_ln2, proj_size_enc));
+    CHECK_CUDA(cudaMalloc(&d_W1, weight_ff_size * sizeof(float)));
+    CHECK_CUDA(cudaMalloc(&d_W2, weight_ff2_size * sizeof(float)));
+    // Copy encoder inputs and weights from device (for weights, use device-to-device copy)
+    CHECK_CUDA(cudaMemcpy(d_input, d_enc_embed, input_size_enc, cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_Wq, d_Wq_enc, weight_size * sizeof(float), cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_Wk, d_Wk_enc, weight_size * sizeof(float), cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_Wv, d_Wv_enc, weight_size * sizeof(float), cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_Wo, d_Wo_enc, weight_size * sizeof(float), cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_W1, d_W1_enc, weight_ff_size * sizeof(float), cudaMemcpyDeviceToDevice));
+    CHECK_CUDA(cudaMemcpy(d_W2, d_W2_enc, weight_ff2_size * sizeof(float), cudaMemcpyDeviceToDevice));
 
-    float *d_Q_enc, *d_K_enc, *d_V_enc;
-    float *d_scores_enc, *d_O_enc;
-    float *d_MHA_enc, *d_add1_enc, *d_ln1_enc;
-    float *d_ffn1_enc, *d_ffn2_enc, *d_add2_enc, *d_ln2_enc;
-    CHECK_CUDA(cudaMalloc(&d_Q_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_K_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_V_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_scores_enc, scores_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_O_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_MHA_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_add1_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_ln1_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_ffn1_enc, ffn1_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_ffn2_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_add2_enc, proj_size_enc));
-    CHECK_CUDA(cudaMalloc(&d_ln2_enc, proj_size_enc));
-
-    CHECK_CUDA(cudaEventRecord(start_kernel, 0));
-    // Linear Projections for encoder: Q, K, V from d_enc_embed.
+    cudaEventRecord(start_kernel, 0);
     dim3 block(TILE_WIDTH, TILE_WIDTH);
     dim3 grid((d_total + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH);
-    matmul_kernel<<<grid, block>>>(d_enc_embed, d_Wq_enc, d_Q_enc, M, d_total, d_total);
-    matmul_kernel<<<grid, block>>>(d_enc_embed, d_Wk_enc, d_K_enc, M, d_total, d_total);
-    matmul_kernel<<<grid, block>>>(d_enc_embed, d_Wv_enc, d_V_enc, M, d_total, d_total);
-
-    // Multi-Head Attention: compute scores, softmax, weighted sum.
+    // Linear projections for encoder
+    matmul_kernel<<<grid, block>>>(d_input, d_Wq, d_Q, M, d_total, d_total);
+    matmul_kernel<<<grid, block>>>(d_input, d_Wk, d_K, M, d_total, d_total);
+    matmul_kernel<<<grid, block>>>(d_input, d_Wv, d_V, M, d_total, d_total);
+    // Multi-head attention
     dim3 grid_att((M + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH, H);
-    compute_scores_kernel<<<grid_att, block>>>(d_Q_enc, d_K_enc, d_scores_enc, M, M, H, d_head);
+    compute_scores_kernel<<<grid_att, block>>>(d_Q, d_K, d_scores, M, M, H, d_head);
     int threads_att = 256;
     int blocks_att = M * H;
-    size_t shared_mem = threads_att * sizeof(float);
-    softmax_kernel<<<blocks_att, threads_att, shared_mem>>>(d_scores_enc, M, M, H);
+    size_t shared_mem_bytes = threads_att * sizeof(float);
+    softmax_kernel<<<blocks_att, threads_att, shared_mem_bytes>>>(d_scores, M, M, H);
     dim3 grid_ws((d_head + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH, H);
-    weighted_sum_kernel<<<grid_ws, block>>>(d_scores_enc, d_V_enc, d_O_enc, M, M, H, d_head);
-    // Final linear projection for multi-head attention branch.
-    matmul_kernel<<<grid, block>>>(d_O_enc, d_Wo_enc, d_MHA_enc, M, d_total, d_total);
-    // Residual connection and layer normalization.
+    weighted_sum_kernel<<<grid_ws, block>>>(d_scores, d_V, d_O, M, M, H, d_head);
+    // Final projection for attention branch
+    matmul_kernel<<<grid, block>>>(d_O, d_Wo, d_MHA, M, d_total, d_total);
     int total_elems_enc = M * d_total;
     int threads_add = 256;
     int blocks_add = (total_elems_enc + threads_add - 1) / threads_add;
-    add_kernel<<<blocks_add, threads_add>>>(d_enc_embed, d_MHA_enc, d_add1_enc, total_elems_enc);
+    add_kernel<<<blocks_add, threads_add>>>(d_input, d_MHA, d_add1, total_elems_enc);
     int ln_threads = 256;
-    layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add1_enc, d_ln1_enc, M, d_total, 1e-5);
-
-    // Feed-Forward Network in encoder.
+    layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add1, d_ln1, M, d_total, 1e-5);
+    // Feed forward network in encoder
     dim3 grid_ffn((d_ff + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH);
-    matmul_kernel<<<grid_ffn, block>>>(d_ln1_enc, d_W1_enc, d_ffn1_enc, M, d_total, d_ff);
+    matmul_kernel<<<grid_ffn, block>>>(d_ln1, d_W1, d_ffn1, M, d_total, d_ff);
     int total_ffn1 = M * d_ff;
     int blocks_relu = (total_ffn1 + threads_add - 1) / threads_add;
-    relu_kernel<<<blocks_relu, threads_add>>>(d_ffn1_enc, total_ffn1);
-    matmul_kernel<<<grid, block>>>(d_ffn1_enc, d_W2_enc, d_ffn2_enc, M, d_ff, d_total);
-    add_kernel<<<blocks_add, threads_add>>>(d_ln1_enc, d_ffn2_enc, d_add2_enc, total_elems_enc);
-    layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add2_enc, d_ln2_enc, M, d_total, 1e-5);
-
-    CHECK_CUDA(cudaEventRecord(stop_kernel, 0));
-    CHECK_CUDA(cudaEventSynchronize(stop_kernel));
+    relu_kernel<<<blocks_relu, threads_add>>>(d_ffn1, total_ffn1);
+    matmul_kernel<<<grid, block>>>(d_ffn1, d_W2, d_ffn2, M, d_ff, d_total);
+    add_kernel<<<blocks_add, threads_add>>>(d_ln1, d_ffn2, d_add2, total_elems_enc);
+    layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add2, d_ln2, M, d_total, 1e-5);
+    cudaEventRecord(stop_kernel, 0);
+    cudaEventSynchronize(stop_kernel);
     float kernel_time_enc;
     CHECK_CUDA(cudaEventElapsedTime(&kernel_time_enc, start_kernel, stop_kernel));
 
-    // (c) GPU Decoder Processing (similar structure to encoder; here we process self-attention, encoder-decoder attention and FFN)
+    // Setting encoder output pointer for decoder
+    float *d_enc = d_ln2; // Final encoder output
+
+    // GPU Decoder Processing
+    float *d_Y = d_dec_embed; // decoder input embeddings
+
     size_t proj_size_dec = M * d_total * sizeof(float);
     size_t scores_size_dec = M * M * H * sizeof(float);
     size_t ffn1_size_dec = M * d_ff * sizeof(float);
@@ -771,46 +744,50 @@ int main() {
     CHECK_CUDA(cudaMalloc(&d_ln_dec, proj_size_dec));
 
     CHECK_CUDA(cudaEventRecord(start_kernel, 0));
-    // Self-Attention for decoder.
     dim3 grid_dec((d_total + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH);
-    matmul_kernel<<<grid_dec, block>>>(d_dec_embed, d_Wq_dec_self, d_Q_dec, M, d_total, d_total);
-    matmul_kernel<<<grid_dec, block>>>(d_dec_embed, d_Wk_dec_self, d_K_dec, M, d_total, d_total);
-    matmul_kernel<<<grid_dec, block>>>(d_dec_embed, d_Wv_dec_self, d_V_dec, M, d_total, d_total);
+    // Self-attention for decoder
+    matmul_kernel<<<grid_dec, block>>>(d_Y, d_Wq_dec_self, d_Q_dec, M, d_total, d_total);
+    matmul_kernel<<<grid_dec, block>>>(d_Y, d_Wk_dec_self, d_K_dec, M, d_total, d_total);
+    matmul_kernel<<<grid_dec, block>>>(d_Y, d_Wv_dec_self, d_V_dec, M, d_total, d_total);
     dim3 grid_att_dec((M + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH, H);
     compute_scores_kernel<<<grid_att_dec, block>>>(d_Q_dec, d_K_dec, d_scores_dec, M, M, H, d_head);
-    softmax_kernel<<<M*H, threads_att, shared_mem>>>(d_scores_dec, M, M, H);
+    int threads_att_dec = 256;
+    size_t shared_mem_dec = threads_att_dec * sizeof(float);
+    softmax_kernel<<<M * H, threads_att_dec, shared_mem_dec>>>(d_scores_dec, M, M, H);
     weighted_sum_kernel<<<grid_att_dec, block>>>(d_scores_dec, d_V_dec, d_O_dec, M, M, H, d_head);
     matmul_kernel<<<grid_dec, block>>>(d_O_dec, d_Wo_dec_self, d_attn_dec, M, d_total, d_total);
-    add_kernel<<<blocks_add, threads_add>>>(d_dec_embed, d_attn_dec, d_add_self_dec, M * d_total);
+    int total_elems_dec = M * d_total;
+    int blocks_add_dec = (total_elems_dec + threads_add - 1) / threads_add;
+    add_kernel<<<blocks_add_dec, threads_add>>>(d_Y, d_attn_dec, d_add_self_dec, total_elems_dec);
     layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add_self_dec, d_ln_self_dec, M, d_total, 1e-5);
     
-    // Encoder-Decoder Attention:
+    // Encoder-decoder attention
     matmul_kernel<<<grid_dec, block>>>(d_ln_self_dec, d_Wq_dec_encdec, d_Q_encdec, M, d_total, d_total);
+    // Use the encoder output (d_enc) set earlier
     matmul_kernel<<<grid_dec, block>>>(d_enc, d_Wk_dec_encdec, d_K_encdec, M, d_total, d_total);
     matmul_kernel<<<grid_dec, block>>>(d_enc, d_Wv_dec_encdec, d_V_encdec, M, d_total, d_total);
     dim3 grid_att_encdec((M + TILE_WIDTH - 1) / TILE_WIDTH, (M + TILE_WIDTH - 1) / TILE_WIDTH, H);
     compute_scores_kernel<<<grid_att_encdec, block>>>(d_Q_encdec, d_K_encdec, d_scores_encdec, M, M, H, d_head);
-    softmax_kernel<<<M*H, threads_att, shared_mem>>>(d_scores_encdec, M, M, H);
+    softmax_kernel<<<M * H, threads_att_dec, shared_mem_dec>>>(d_scores_encdec, M, M, H);
     weighted_sum_kernel<<<grid_att_encdec, block>>>(d_scores_encdec, d_V_encdec, d_O_encdec, M, M, H, d_head);
     matmul_kernel<<<grid_dec, block>>>(d_O_encdec, d_Wo_dec_encdec, d_attn_encdec, M, d_total, d_total);
-    add_kernel<<<blocks_add, threads_add>>>(d_ln_self_dec, d_attn_encdec, d_add_encdec, M * d_total);
+    add_kernel<<<blocks_add_dec, threads_add>>>(d_ln_self_dec, d_attn_encdec, d_add_encdec, total_elems_dec);
     layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add_encdec, d_ln_encdec, M, d_total, 1e-5);
     
-    // Feed-Forward Network in decoder.
+    // Feed forward network in decoder
     matmul_kernel<<<grid_ffn, block>>>(d_ln_encdec, d_W1_dec, d_ffn1_dec, M, d_total, d_ff);
     int total_ffn1_dec = M * d_ff;
     int blocks_relu_dec = (total_ffn1_dec + threads_add - 1) / threads_add;
     relu_kernel<<<blocks_relu_dec, threads_add>>>(d_ffn1_dec, total_ffn1_dec);
     matmul_kernel<<<grid_dec, block>>>(d_ffn1_dec, d_W2_dec, d_ffn2_dec, M, d_ff, d_total);
-    add_kernel<<<blocks_add, threads_add>>>(d_ln_encdec, d_ffn2_dec, d_add_ffn_dec, M * d_total);
+    add_kernel<<<blocks_add_dec, threads_add>>>(d_ln_encdec, d_ffn2_dec, d_add_ffn_dec, total_elems_dec);
     layer_norm_kernel<<<M, ln_threads, ln_threads * sizeof(float)>>>(d_add_ffn_dec, d_ln_dec, M, d_total, 1e-5);
-    
     CHECK_CUDA(cudaEventRecord(stop_kernel, 0));
     CHECK_CUDA(cudaEventSynchronize(stop_kernel));
     float kernel_time_dec;
     CHECK_CUDA(cudaEventElapsedTime(&kernel_time_dec, start_kernel, stop_kernel));
 
-    // (d) Copy final decoder output from device to host.
+    // Copy final decoder output from device to host
     std::vector<float> dec_out_gpu(M * d_total);
     CHECK_CUDA(cudaEventRecord(start_d2h, 0));
     CHECK_CUDA(cudaMemcpy(dec_out_gpu.data(), d_ln_dec, proj_size_dec, cudaMemcpyDeviceToHost));
@@ -818,46 +795,36 @@ int main() {
     CHECK_CUDA(cudaEventSynchronize(stop_d2h));
     float d2h_time;
     CHECK_CUDA(cudaEventElapsedTime(&d2h_time, start_d2h, stop_d2h));
-    
+
     CHECK_CUDA(cudaEventRecord(stop_total, 0));
     CHECK_CUDA(cudaEventSynchronize(stop_total));
     float total_gpu_time;
     CHECK_CUDA(cudaEventElapsedTime(&total_gpu_time, start_total, stop_total));
 
     std::cout << "GPU Inference Timings:" << std::endl;
-    std::cout << "  H2D Copy Time: " << h2d_time << " ms" << std::endl;
+    std::cout << "  Host-to-Device Copy Time: " << h2d_time << " ms" << std::endl;
     std::cout << "  Encoder Kernel Time: " << kernel_time_enc << " ms" << std::endl;
     std::cout << "  Decoder Kernel Time: " << kernel_time_dec << " ms" << std::endl;
-    std::cout << "  D2H Copy Time: " << d2h_time << " ms" << std::endl;
+    std::cout << "  Device-to-Host Copy Time: " << d2h_time << " ms" << std::endl;
     std::cout << "  Total GPU Inference Time: " << total_gpu_time << " ms" << std::endl;
 
-    // ---------------------------------------------------------------------
-    // (Optional) Compare or print some outputs...
-    std::cout << "CPU Decoder Output (first 10 values):" << std::endl;
-    for (int i = 0; i < 10; i++){
-        std::cout << dec_out_cpu[i] << " ";
-    }
-    std::cout << "\nGPU Decoder Output (first 10 values):" << std::endl;
-    for (int i = 0; i < 10; i++){
-        std::cout << dec_out_gpu[i] << " ";
-    }
     std::cout << std::endl;
 
-    // ---------------------------------------------------------------------
-    // Cleanup CPU memory
-    // (Vectors allocated on the host will free automatically)
-    // Cleanup GPU memory and events.
+    // Cleanup GPU memory and events
     cudaFree(d_enc_embed);  cudaFree(d_dec_embed);
     cudaFree(d_Wq_enc);  cudaFree(d_Wk_enc);  cudaFree(d_Wv_enc);  cudaFree(d_Wo_enc);
     cudaFree(d_W1_enc);  cudaFree(d_W2_enc);
-    cudaFree(d_Wq_dec_self); cudaFree(d_Wk_dec_self); cudaFree(d_Wv_dec_self); cudaFree(d_Wo_dec_self);
-    cudaFree(d_Wq_dec_encdec); cudaFree(d_Wk_dec_encdec); cudaFree(d_Wv_dec_encdec); cudaFree(d_Wo_dec_encdec);
+    cudaFree(d_Wq_dec_self);  cudaFree(d_Wk_dec_self);  cudaFree(d_Wv_dec_self);  cudaFree(d_Wo_dec_self);
+    cudaFree(d_Wq_dec_encdec);  cudaFree(d_Wk_dec_encdec);  cudaFree(d_Wv_dec_encdec);  cudaFree(d_Wo_dec_encdec);
     cudaFree(d_W1_dec);  cudaFree(d_W2_dec);
-    cudaFree(d_Q_enc);  cudaFree(d_K_enc);  cudaFree(d_V_enc);
-    cudaFree(d_scores_enc);  cudaFree(d_O_enc);
-    cudaFree(d_MHA_enc);  cudaFree(d_add1_enc);  cudaFree(d_ln1_enc);
-    cudaFree(d_ffn1_enc); cudaFree(d_ffn2_enc);
-    cudaFree(d_add2_enc); cudaFree(d_ln2_enc);
+    cudaFree(d_input);  cudaFree(d_Wq);  cudaFree(d_Wk);  cudaFree(d_Wv);  cudaFree(d_Wo);
+    cudaFree(d_Q);  cudaFree(d_K);  cudaFree(d_V);
+    cudaFree(d_scores);  cudaFree(d_O);
+    cudaFree(d_MHA);  cudaFree(d_add1);  cudaFree(d_ln1);
+    cudaFree(d_ffn1); cudaFree(d_ffn2);
+    cudaFree(d_add2); cudaFree(d_ln2);
+    // Decoder GPU buffers
+    cudaFree(d_Y);
     cudaFree(d_Q_dec);  cudaFree(d_K_dec);  cudaFree(d_V_dec);
     cudaFree(d_scores_dec);  cudaFree(d_O_dec);
     cudaFree(d_attn_dec);  cudaFree(d_add_self_dec);  cudaFree(d_ln_self_dec);
@@ -866,10 +833,10 @@ int main() {
     cudaFree(d_attn_encdec);  cudaFree(d_add_encdec); cudaFree(d_ln_encdec);
     cudaFree(d_ffn1_dec); cudaFree(d_ffn2_dec);
     cudaFree(d_add_ffn_dec); cudaFree(d_ln_dec);
-    cudaEventDestroy(start_total); cudaEventDestroy(stop_total);
-    cudaEventDestroy(start_h2d); cudaEventDestroy(stop_h2d);
-    cudaEventDestroy(start_kernel); cudaEventDestroy(stop_kernel);
-    cudaEventDestroy(start_d2h); cudaEventDestroy(stop_d2h);
+    cudaEventDestroy(start_total);  cudaEventDestroy(stop_total);
+    cudaEventDestroy(start_h2d);  cudaEventDestroy(stop_h2d);
+    cudaEventDestroy(start_kernel);  cudaEventDestroy(stop_kernel);
+    cudaEventDestroy(start_d2h);  cudaEventDestroy(stop_d2h);
 
     return 0;
 }
