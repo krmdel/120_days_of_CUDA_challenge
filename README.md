@@ -3,6 +3,8 @@ I'm sharing my learnings&progress on GPU computing and data parallel programming
 
 Here is my 120 days of CUDA challenge!
 
+## Basics of Parallel Programming in CUDA 
+
 ## Day 1
 - Lecture 1&2 of GPU Computing by Dr. Izzat El Hajj
 - Implementation of vector addition in CUDA
@@ -97,6 +99,8 @@ Here is my 120 days of CUDA challenge!
 ## Day 24
 - Implementation of dynamic parallelism in CUDA
 
+## Basics of Deep Learning
+
 ## Day 25
 - Implementation of forward pass for linear regression in CUDA
 
@@ -109,6 +113,8 @@ Here is my 120 days of CUDA challenge!
 ## Day 28
 - Implementation of multi layer perceptron with forward and backward pass in CUDA
 
+## Convolutional Neural Networks
+
 ## Day 29
 - Implementation of convolution neural networks in CUDA
 
@@ -117,6 +123,8 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 31
 - Implementation of skip connections and ResNet architecture for convolutional neural networks in CUDA
+
+## Transformers
 
 ## Day 32
 - Implementation of positional encoding for transformers in CUDA
@@ -138,3 +146,8 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 38
 - Implementation of encoder-decoder ingegration for sequence-to-sequence in CUDA
+
+## Vision Transformers
+
+## Day 39
+- Implementation of image patch extraction and generating patch embeddings in CUDA
