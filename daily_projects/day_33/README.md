@@ -1,4 +1,4 @@
-Day 33: Implementation of tokenizer for transformers in CUDA
+Day 33: Implementation of tokenizer in CUDA
 
 1) Summary of the daily tutorial:
 
