@@ -9,7 +9,7 @@ The code performs extraction of non-overlapping patches from an input image and 
   ```math
   r = \left\lfloor \frac{p}{N_w} \right\rfloor \times P, \quad c = \left(p \mod N_w\right) \times P,
   ```
-  where N_w = W / P is the number of patches per row and p is the patch index.
+  where Nw = W / P is the number of patches per row and p is the patch index.
 
 - Patch flattening and embedding generation: Each (P x P) patch is flattened into a vector of size K with:
   
