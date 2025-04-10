@@ -1,4 +1,4 @@
-Day 38: Implementation of encoder-decoder ingegration for sequence-to-sequence in CUDA
+Day 38: Implementation of encoder-decoder integration for sequence-to-sequence in CUDA
 
 1) Summary of the daily tutorial:
 
