@@ -127,10 +127,10 @@ Here is my 120 days of CUDA challenge!
 ## Transformers
 
 ## Day 32
-- Implementation of positional encoding for transformers in CUDA
+- Implementation of positional encoding  in CUDA
 
 ## Day 33
-- Implementation of tokenizer for transformers in CUDA
+- Implementation of tokenizer in CUDA
 
 ## Day 34
 - Implementation of scaled dot-product attention in CUDA
@@ -151,3 +151,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 39
 - Implementation of image patch extraction and generating patch embeddings in CUDA
+
+## Day 40
+- Implementation of positional embeddings for image patches in CUDA
