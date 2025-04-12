@@ -154,3 +154,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 40
 - Implementation of positional embeddings for image patches in CUDA
+
+## Day 41
+- Implementation of encoder block for vision transfomer in CUDA
