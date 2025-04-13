@@ -157,3 +157,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 41
 - Implementation of encoder block for vision transfomer in CUDA
+
+## Day 42
+- Implementation of integration for vision transfomer in CUDA
