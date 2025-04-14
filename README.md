@@ -161,7 +161,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 42
 - Implementation of integration for vision transfomer in CUDA
 
-## Vision Language Model (Contrastive Language-Image Pre-Training (CLIP))
+## Vision Language Models (Contrastive Language-Image Pre-Training (CLIP))
 
 ## Day 43
 - Implementation of image encoder in CUDA
