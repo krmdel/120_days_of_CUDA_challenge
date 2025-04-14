@@ -1,5 +1,5 @@
 # 120 Days of CUDA Challenge
-I'm sharing my learnings&progress on GPU computing and data parallel programming in CUDA with resources and explanations of each project with code.  
+I'm sharing my learnings & progress on GPU computing and data parallel programming in CUDA with resources and explanations of each project with code.  
 
 Here is my 120 days of CUDA challenge!
 
@@ -113,7 +113,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 28
 - Implementation of multi layer perceptron with forward and backward pass in CUDA
 
-## Convolutional Neural Networks
+## Convolutional Neural Networks (CNN)
 
 ## Day 29
 - Implementation of convolution neural networks in CUDA
@@ -147,7 +147,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 38
 - Implementation of encoder-decoder integration for sequence-to-sequence in CUDA
 
-## Vision Transformers
+## Vision Transformers (ViT)
 
 ## Day 39
 - Implementation of image patch extraction and generating patch embeddings in CUDA
@@ -160,3 +160,8 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 42
 - Implementation of integration for vision transfomer in CUDA
+
+## Vision Language Model (Contrastive Language-Image Pre-Training (CLIP))
+
+## Day 43
+- Implementation of image encoder in CUDA
