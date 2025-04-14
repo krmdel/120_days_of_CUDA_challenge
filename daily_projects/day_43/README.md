@@ -38,7 +38,7 @@ The code implements image encoder for vision langugage models which processes an
     \text{scores} = \text{Q} \times \text{K}^\top
     ```
     
-    These scores are then scaled by the factor 1/sqrt(MODEL_DIM):
+    These scores are then scaled by the factor \( \frac{1}{\sqrt{\text{MODEL\_DIM}}} \):
 
     ```math
     \text{scores} \mathrel{*}= \frac{1}{\sqrt{\text{MODEL\_DIM}}}
