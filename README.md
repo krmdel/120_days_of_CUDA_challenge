@@ -166,5 +166,5 @@ Here is my 120 days of CUDA challenge!
 ## Day 43
 - Implementation of image encoder in CUDA
 
-## Day 44: 
+## Day 44
 - Implementation of text encoder in CUDA
