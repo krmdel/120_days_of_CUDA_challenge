@@ -168,3 +168,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 44
 - Implementation of text encoder in CUDA
+
+## Day 45
+- Implementation of cross model attention mechanism in CUDA
