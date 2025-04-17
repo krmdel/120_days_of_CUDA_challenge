@@ -1,4 +1,4 @@
-Day 47: Implementation of decoder in CUDA
+Day 46: Implementation of decoder in CUDA
 
 1) Summary of the daily tutorial
 
