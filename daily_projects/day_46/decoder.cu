@@ -1,6 +1,3 @@
-// decoder_only.cu
-// Standalone CPU & GPU Transformer Decoder Implementation with Timing
-
 #include <cuda_runtime.h>
 #include <iostream>
 #include <chrono>
