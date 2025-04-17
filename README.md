@@ -173,4 +173,4 @@ Here is my 120 days of CUDA challenge!
 - Implementation of cross model attention mechanism in CUDA
 
 ## Day 46
-- Implementation of a basic vision language model for image captioning in CUDA
+- Implementation of decoder in CUDA
