@@ -174,3 +174,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 46
 - Implementation of decoder in CUDA
+
+## Day 47
+- Implementation of vision language model for image captioning in CUDA
