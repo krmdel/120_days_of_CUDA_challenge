@@ -177,3 +177,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 47
 - Implementation of vision language model for image captioning in CUDA
+
+## Day 48
+- Implementation of contrastive language-image pre-training (CLIP) in CUDA
