@@ -180,3 +180,8 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 48
 - Implementation of contrastive language-image pre-training (CLIP) in CUDA
+
+## Stable Diffusion
+
+## Day 49
+- Implementation of forward diffusion in CUDA
