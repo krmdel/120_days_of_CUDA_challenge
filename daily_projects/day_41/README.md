@@ -1,4 +1,4 @@
-Day 41: Implementation of encoder block for vision transfomer in CUDA
+Day 41: Implementation of encoder block for vision transformer in CUDA
 
 1) Summary of the daily tutorial:
 

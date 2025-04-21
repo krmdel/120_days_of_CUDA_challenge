@@ -156,10 +156,10 @@ Here is my 120 days of CUDA challenge!
 - Implementation of positional embeddings for image patches in CUDA
 
 ## Day 41
-- Implementation of encoder block for vision transfomer in CUDA
+- Implementation of encoder block for vision transformer in CUDA
 
 ## Day 42
-- Implementation of integration for vision transfomer in CUDA
+- Implementation of integration for vision transformer in CUDA
 
 ## Vision Language Models (Contrastive Language-Image Pre-Training (CLIP))
 

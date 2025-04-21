@@ -1,4 +1,4 @@
-Day 42: Implementation of integration for vision transfomer in CUDA
+Day 42: Implementation of integration for vision transformer in CUDA
 
 1) Summary of the daily tutorial:
 
