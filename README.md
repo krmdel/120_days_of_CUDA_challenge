@@ -188,3 +188,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 50
 - Implementation of reverse diffusion, step and loss in CUDA
+
+## Day 51
+- Implementation of latent U-Net denoiser in CUDA
