@@ -191,3 +191,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 51
 - Implementation of latent U-Net denoiser in CUDA
+
+## Day 52: 
+- Implementation of training loop and image synthesis in CUDA
