@@ -14,7 +14,7 @@ The code implements a fast 50‑step sampling loop for a latent diffusion model 
   - relu: Applies element‑wise ReLU:  
 
     ```cpp
-    t[i] = fmaxf(t[i], 0.f);
+    t[i] = fmaxf(t[i], 0);
     ```
   - add_res: Adds the input latent, x_t, back into the network output (y += x) for the residual connection.
   - rng_init: Initializes a Philox-based, curandState, for each element of the latent tensor.
