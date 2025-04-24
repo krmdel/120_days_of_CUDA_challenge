@@ -194,3 +194,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 52
 - Implementation of training loop and image synthesis in CUDA
+
+## Day 53
+- Implementation of sampling and schedule optimization in CUDA
