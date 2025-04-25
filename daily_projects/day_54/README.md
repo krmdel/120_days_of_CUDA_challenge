@@ -3,9 +3,10 @@ Day 54: Implementation of Q·Kᵀ via I/O-aware tiling in CUDA
 1) Summary of the daily tutorial
 
 The code implements two ways to compute the attention score matrix  
-\[
-S = Q \, K^{T}\quad\text{with}\quad S_{i,j} = \sum_{k=0}^{d-1} Q_{i,k}\,\times\,K_{j,k}.
-\] 
+
+```math
+S_{i,j} = \sum_{k=0}^{d-1} Q_{i,k} \cdot K_{j,k}
+```
 
 The naive kernel assigns one thread to each (i,j) entry of S, reading all d elements of Q and K from global memory for every dot product. The I/O-aware tiled kernel stages each query row once into shared memory and streams blocks of the key matrix into registers, dramatically reducing redundant global‐memory traffic and improving arithmetic intensity.
 
