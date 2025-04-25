@@ -197,3 +197,9 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 53
 - Implementation of sampling and schedule optimization in CUDA
+
+## Flash Attention 1.0
+
+## Day 54
+- Implementation of Q·Kᵀ via I/O-aware tiling in CUDA
+
