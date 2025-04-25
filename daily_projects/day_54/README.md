@@ -46,11 +46,11 @@ The naive kernel assigns one thread to each (i,j) entry of S, reading all d elem
 
 Compiling the code:
 
-<pre>nvcc .\tiled_qk.cu -o tiled_qk</pre>
+<pre>nvcc .\tiled_qkt.cu -o tiled_qkt</pre>
 
 Running the code after compiling:
 
-<pre>tiled_qk</pre>
+<pre>tiled_qkt</pre>
 
 <pre>Naive kernel (L=512, d=64)
   Host-to-Device copy time:      : 0.115424 ms
