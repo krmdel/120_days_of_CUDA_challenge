@@ -203,3 +203,6 @@ Here is my 120 days of CUDA challenge!
 ## Day 54
 - Implementation of Q·Kᵀ via I/O-aware tiling in CUDA
 
+## Day 55
+- Implementation of online softmax in CUDA
+
