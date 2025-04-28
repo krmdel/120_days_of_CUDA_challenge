@@ -209,3 +209,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 56
 - Implementation of flash attention in CUDA
 
+## Generative Adversarial Networks (GAN)
+
+## Day 57
+- Implementation of deep convolutional generative adversarial network (DCGAN) in CUDA
