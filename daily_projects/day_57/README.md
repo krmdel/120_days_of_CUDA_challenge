@@ -9,22 +9,21 @@ Day 57: Implementation of deep convolutional generative adversarial network (DCG
              + \mathbb{E}_{z\sim p_z}\bigl[\log\bigl(1 - D(G(z))\bigr)\bigr]\,.  
   ```  
 
-—  
-  CUDA kernels:  
-  - fill: launches enough threads to set every element of a float array to a constant.  
-  - relu / relu_g: element-wise ReLU and its derivative (for backprop).  
-  - tanh_f / tanh_g: element-wise tanh and its derivative.  
-  - sigmoid: transforms logits into probabilities in [0,1].  
-  - bce_grad: computes the binary-cross-entropy loss per element, its gradient, and reduces into a single loss scalar via shared-memory tree reduction + 'atomicAdd'.  
-  - lin_fwd: computes a dense layer forward pass (matrix–vector multiply plus bias) over a batch.  
-  - dW_db: from upstream dY, accumulates weight‐gradient dW via Xᵀ·dY and bias‐gradient db by summing dY.  
-  - **dX: given dY and W, computes input-gradient dX = dY·Wᵀ.  
-  - **sgd: performs the update  
-  
-  ```math
-    w_i \;\leftarrow\; w_i - \tfrac{\mathrm{LR}}{\mathrm{BATCH}}\,\bigl.\tfrac{\partial\mathcal{L}}{\partial w_i}\bigr.
-  ```  
-  for every element of a weight or bias tensor.  
+  - CUDA kernels:  
+    - fill: launches enough threads to set every element of a float array to a constant.  
+    - relu / relu_g: element-wise ReLU and its derivative (for backprop).  
+    - tanh_f / tanh_g: element-wise tanh and its derivative.  
+    - sigmoid: transforms logits into probabilities in [0,1].  
+    - bce_grad: computes the binary-cross-entropy loss per element, its gradient, and reduces into a single loss scalar via shared-memory tree reduction + 'atomicAdd'.  
+    - lin_fwd: computes a dense layer forward pass (matrix–vector multiply plus bias) over a batch.  
+    - dW_db: from upstream dY, accumulates weight‐gradient dW via Xᵀ·dY and bias‐gradient db by summing dY.  
+    - **dX: given dY and W, computes input-gradient dX = dY·Wᵀ.  
+    - **sgd: performs the update  
+
+    ```math
+      w_i \;\leftarrow\; w_i - \tfrac{\mathrm{LR}}{\mathrm{BATCH}}\,\bigl.\tfrac{\partial\mathcal{L}}{\partial w_i}\bigr.
+    ```  
+    for every element of a weight or bias tensor.  
 
 2) Implementation
 
