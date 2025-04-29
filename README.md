@@ -213,3 +213,7 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 57
 - Implementation of deep convolutional generative adversarial network (DCGAN) in CUDA
+
+## Day 58
+- Implementation of StyleGAN-2 in CUDA
+
