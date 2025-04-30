@@ -217,3 +217,7 @@ Here is my 120 days of CUDA challenge!
 ## Day 58
 - Implementation of StyleGAN-2 in CUDA
 
+## Segment Anything Model (SAM)
+
+## Day 59
+- Implementation of image encoder on vision transformer backbone in CUDA
