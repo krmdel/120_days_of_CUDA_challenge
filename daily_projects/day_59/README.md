@@ -23,24 +23,18 @@ Positional embedding addition:
 \text{tok}[p, d]\;\mathrel{+}=\,\text{pos}[p, d]
 ```
 - CUDA kernels:
-
   - patch_embed: Loads one 16×16 patch per block, flattens and multiplies it by the patch-projection weight matrix in register/fast memory. It then computes raw patch embeddings and immediately adds the corresponding positional embedding.
-
   - layernorm: For each token, computes mean and variance across the 256-dim embedding lanes, then normalizes to zero mean and unit variance. It then stabilizes training and inference by standardizing each token’s distribution.
-
-  - linear: Performs a batched GEMV: for each token t and output dim d, computes  
-      \[
-        \text{out}[t,d] = \sum_{k=0}^{ID-1} \text{in}[t,k]\;W[k,d] \;+\; B[d]
-      \]
+  - linear: Performs a batched GEMV: for each token t and output dim d, computes        
+  ```math
+  \text{out}[t, d] \;=\; \sum_{k=0}^{ID-1} \text{in}[t, k]\; W[k, d] \;+\; B[d]
+  ```
     then implements the Q, K, V projections (ID=OD=256) and could also serve as the final output projection.
-
   - attn: Each block computes one attention head for one query token:  
       1. Thread 0 loads dot-products <Q_h(t),K_h(j)> for all j, scales by 1/sqrt(d_h), and applies softmax.  
       2. All threads then use the shared probability vector to compute the weighted sum of V_h.  
     then implements multi-head scaled-dot-product attention without any library calls.
-
   - add_vec: Adds vector b into a element-wise over all tokens and embedding dimensions. It then realizes residual connections (token + attention output, and token + MLP output).
-
   - mlp: 
     - Two-layer feed-forward network:  
       1. Hidden = GELU(in·W1 + B1) where W1 is [256→1024]  
