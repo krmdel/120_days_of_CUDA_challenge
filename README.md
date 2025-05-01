@@ -221,3 +221,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 59
 - Implementation of image encoder on vision transformer backbone in CUDA
+
+## Day 60
+- Implementation of prompt encoder for sparse and dense prompt embeddings in CUDA
