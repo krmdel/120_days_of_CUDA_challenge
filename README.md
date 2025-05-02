@@ -224,3 +224,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 60
 - Implementation of prompt encoder for sparse and dense prompt embeddings in CUDA
+
+## Day 61
+- Implementation of two way attention decoder in CUDA
