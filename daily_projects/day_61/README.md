@@ -49,46 +49,6 @@ The code implements two-way attention decoder that fuses prompt tokens and image
     - Hidden = GELU(W1·in)
     - Output = W2·hidden
 
-2. Implementation:
-
-Compiling the code:
-
-<pre>nvcc decoder.cu -o decoder</pre>
-
-Running the code after compiling:
-
-<pre>./decoder</pre>
-
-<pre>
-GPU timings (ms):
-  Host-to-Device copy time:      :  X.XX ms
-  Kernel execution time:         :  Y.YY ms
-  Device-to-Host copy time:      :  Z.ZZ ms
-  Total GPU time:                :  W.WW ms
-</pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2) Implementation
 
 Compiling the code:
