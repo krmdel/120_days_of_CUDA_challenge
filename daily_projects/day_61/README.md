@@ -53,7 +53,7 @@ The code implements two-way attention decoder that fuses prompt tokens and image
 
 Compiling the code:
 
-<pre>nvcc day61_decoder.cu -o decoder</pre>
+<pre>nvcc decoder.cu -o decoder</pre>
 
 Running the code after compiling:
 
