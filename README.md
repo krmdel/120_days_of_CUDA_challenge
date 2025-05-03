@@ -227,3 +227,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 61
 - Implementation of two way attention decoder in CUDA
+
+## Day 62
+- Implementation of mask decoder in CUDA
