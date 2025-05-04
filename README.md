@@ -230,3 +230,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 62
 - Implementation of mask decoder in CUDA
+
+## Day 63:
+- Integration of full pipeline for baseline SAM in CUDA
