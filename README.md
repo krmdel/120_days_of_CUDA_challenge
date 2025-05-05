@@ -233,3 +233,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 63:
 - Integration of full pipeline for baseline SAM in CUDA
+
+## Day 64:
+- Implementation of SAM with Flash Attention 1.0 in CUDA
