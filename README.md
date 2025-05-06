@@ -239,7 +239,7 @@ Here is my 120 days of CUDA challenge!
 
 ## Singal Processing
 
-## Frequency Domain
+## 1) Frequency Domain
 
 ## Day 65
 - Implementation of one dimensional (1D) discrete Fourier transform (DFT) in CUDA
