@@ -236,3 +236,10 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 64
 - Implementation of SAM with Flash Attention 1.0 in CUDA
+
+## Singal Processing
+
+## Frequency Domain
+
+## Day 65
+- Implementation of one dimensional (1D) discrete Fourier transform (DFT) in CUDA
