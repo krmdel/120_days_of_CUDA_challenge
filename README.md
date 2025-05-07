@@ -243,3 +243,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 65
 - Implementation of one dimensional (1D) discrete Fourier transform (DFT) in CUDA
+
+## Day 66
+- Implementation of one dimensional (1D) inverse discrete Fourier transform (IDFT) in CUDA
