@@ -13,7 +13,7 @@ The code implements one dimensional (1D) inverse discrete Fourier transform (DFT
   ```
 - CUDA kernels:
   - dft1d_kernel: Each thread computes one frequency bin, k. Accumulates the real input samples multiplied by cos() and sin() terms with a negative sign in the exponent.
-  - dft1d_kernel: Each thread reconstructs one time-domain sample, k. Uses the positive sign in the exponent and divides the final result by N to finish the inverse transform.      |
+  - dft1d_kernel: Each thread reconstructs one time-domain sample, k. Uses the positive sign in the exponent and divides the final result by N to finish the inverse transform.
 
 2) Implementation
 
