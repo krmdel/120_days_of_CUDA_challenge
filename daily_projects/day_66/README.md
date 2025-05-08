@@ -19,11 +19,11 @@ The code implements one dimensional (1D) inverse discrete Fourier transform (DFT
 
 Compiling the code:
 
-<pre>nvcc .\dft_1d.cu -o dft_1d</pre>
+<pre>nvcc .\idft_1d.cu -o idft_1d</pre>
 
 Running the code after compiling:
 
-<pre>dft_1d</pre>
+<pre>idft_1d</pre>
 
 <pre>Vector length: 16384
 CPU forward DFT : 6898.35 ms
