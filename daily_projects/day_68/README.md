@@ -7,11 +7,11 @@ Day 68: Implementation of one dimensional (1D) discrete Fourier transform (DFT) 
 
 Compiling the code:
 
-<pre>nvcc .\flash_sam.cu -o flash_sam</pre>
+<pre>nvcc .\dft_2d.cu -o dft_2d</pre>
 
 Running the code after compiling:
 
-<pre>flash_sam</pre>
+<pre>dft_2d</pre>
 
 <pre>Image size: 128 x 128 (16384 pixels)
 
