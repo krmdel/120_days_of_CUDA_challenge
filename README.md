@@ -255,3 +255,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 69
 - Implementation of two dimensional (2D) discrete Fourier transform (DFT) using shared memory & tiled kernel in CUDA
+
+## Day 70
+- Implementation of comparison of optimized 2D DFT against cuFFT in CUDA
