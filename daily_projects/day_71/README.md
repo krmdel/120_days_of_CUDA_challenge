@@ -45,7 +45,7 @@ Compiling the code:
 
 Running the code after compiling:
 
-<pre>1d_circular_cufftd</pre>
+<pre>1d_circular_cufft</pre>
 
 <pre>Vector length: 16384
 
