@@ -261,3 +261,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 71
 - Implementation of one dimensional (1D) circular convolution using cuFFT
+
+## Day 72
+- Implementation of two dimensional (2D) circular convolution using cuFFT
