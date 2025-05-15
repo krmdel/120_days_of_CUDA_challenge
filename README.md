@@ -264,3 +264,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 72
 - Implementation of two dimensional (2D) circular convolution using cuFFT
+
+## Day 73
+- Implementation of overlap-add FFT-based convolution for long 1D signals in CUDA
