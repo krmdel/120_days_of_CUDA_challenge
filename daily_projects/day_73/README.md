@@ -19,8 +19,8 @@ where X_b[k] – FFT of the b-th hop-sized segment / H[k] – FFT of the zero-pa
         
         - overlap_add_accumulate: Adds the inverse-FFT time-domain blocks into the global output with correct offsets and normalises by 1/N. Atomic adds ensure safe accumulation when multiple blocks update overlapping regions.
 
-Note that: 
-    - Overlap-add is only faster than direct time-domain O(N·M) when each block is big enough that FFT launch overhead is dwarfed by arithmetic.
+Note that:  
+    - Overlap-add is only faster than direct time-domain O(N·M) when each block is big enough that FFT launch overhead is dwarfed by arithmetic.  
     - One large, batched cuFFT is usually best until the signal length exceeds GPU memory.
 
 2) Implementation
