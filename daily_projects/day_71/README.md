@@ -1,4 +1,4 @@
-Day 71: Implementation of one dimensional (1D) circular convolution using cuFFT
+Day 71: Implementation of one dimensional (1D) circular convolution using cuFFT in CUDA
 
 1) Summary of the daily tutorial
 

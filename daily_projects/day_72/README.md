@@ -1,4 +1,4 @@
-Day 72: Implementation of two dimensional (2D) circular convolution using cuFFT
+Day 72: Implementation of two dimensional (2D) circular convolution using cuFFT in CUDA
 
 1) Summary of the daily tutorial
 

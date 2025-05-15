@@ -260,10 +260,10 @@ Here is my 120 days of CUDA challenge!
 - Implementation of comparison of optimized 2D DFT against cuFFT in CUDA
 
 ## Day 71
-- Implementation of one dimensional (1D) circular convolution using cuFFT
+- Implementation of one dimensional (1D) circular convolution using cuFFT in CUDA
 
 ## Day 72
-- Implementation of two dimensional (2D) circular convolution using cuFFT
+- Implementation of two dimensional (2D) circular convolution using cuFFT in CUDA
 
 ## Day 73
 - Implementation of overlap-add FFT-based convolution for long 1D signals in CUDA
