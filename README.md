@@ -267,3 +267,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 73
 - Implementation of overlap-add FFT-based convolution for long 1D signals in CUDA
+
+## Day 74
+- Implementation of power-spectrogram with streams and kernel chaining in CUDA
