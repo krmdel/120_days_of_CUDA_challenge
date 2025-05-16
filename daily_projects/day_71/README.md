@@ -6,25 +6,25 @@ The code implements a circular convolution between two real-valued 1-D signals b
 
 Circular convolution of length-N signals x[n] and h[n] is defined as
 
-    ```math
-    y[n] \;=\; \sum_{k=0}^{N-1} x[k]\,h\!\bigl[(n-k)\bmod N\bigr],
-    \qquad n = 0,\dots,N-1
-    ```
+```math
+y[n] \;=\; \sum_{k=0}^{N-1} x[k]\,h\!\bigl[(n-k)\bmod N\bigr],
+\qquad n = 0,\dots,N-1
+```
 
-	- Forward FFT of both signals
-    ```math
-    X[k] \;=\; \text{FFT}\{x[n]\}, \qquad H[k] \;=\; \text{FFT}\{h[n]\}	
-    ```
+- Forward FFT of both signals
+```math
+X[k] \;=\; \text{FFT}\{x[n]\}, \qquad H[k] \;=\; \text{FFT}\{h[n]\}	
+```
 
-    - Point-wise complex product in the frequency domain
-    ```math
-    Y[k] = X[k] \cdot H[k]
-    ```
+- Point-wise complex product in the frequency domain
+```math
+Y[k] = X[k] \cdot H[k]
+```
 
-    - Inverse FFT and normalisation
-    ```math
-    y[n] = \tfrac{1}{N}\,\text{IFFT}\{Y[k]\}
-    ```
+- Inverse FFT and normalisation
+```math
+y[n] = \tfrac{1}{N}\,\text{IFFT}\{Y[k]\}
+```
 
     - CUDA kernels:
 	    complexPointwiseMul: multiplies two complex vectors element-wise:

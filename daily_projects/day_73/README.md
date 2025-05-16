@@ -12,12 +12,12 @@ y[n] \;=\; \sum_{b=0}^{B-1} \operatorname{ifft}\!\bigl\{ Y_b[k] \bigr\}[\,n-bL\,
 
 where X_b[k] – FFT of the b-th hop-sized segment / H[k] – FFT of the zero-padded kernel (shared by every block) / L – hop size (non-overlapped region of each segment)
 
-    - CUDA kernels
-        - multiply_complex_batch: Per-block point-wise multiplication in the frequency domain. Each thread multiplies one complex spectrum bin of a signal block with the corresponding kernel bin:
+- CUDA kernels
+    - multiply_complex_batch: Per-block point-wise multiplication in the frequency domain. Each thread multiplies one complex spectrum bin of a signal block with the corresponding kernel bin:
 
-        Y_b[k] = X_b[k] \cdot H[k]
-        
-        - overlap_add_accumulate: Adds the inverse-FFT time-domain blocks into the global output with correct offsets and normalises by 1/N. Atomic adds ensure safe accumulation when multiple blocks update overlapping regions.
+    Y_b[k] = X_b[k] \cdot H[k]
+    
+    - overlap_add_accumulate: Adds the inverse-FFT time-domain blocks into the global output with correct offsets and normalises by 1/N. Atomic adds ensure safe accumulation when multiple blocks update overlapping regions.
 
 Note that:  
     - Overlap-add is only faster than direct time-domain O(N·M) when each block is big enough that FFT launch overhead is dwarfed by arithmetic.  
