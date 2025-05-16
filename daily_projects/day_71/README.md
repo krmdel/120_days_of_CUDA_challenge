@@ -26,16 +26,16 @@ Y[k] = X[k] \cdot H[k]
 y[n] = \tfrac{1}{N}\,\text{IFFT}\{Y[k]\}
 ```
 
-    - CUDA kernels:
-	    complexPointwiseMul: multiplies two complex vectors element-wise:
+- CUDA kernels:
+    complexPointwiseMul: multiplies two complex vectors element-wise:
 
-            a[i] = cuCmulf(a[i], b[i]) --> Y[k] = X[k] · H[k]
+        a[i] = cuCmulf(a[i], b[i]) --> Y[k] = X[k] · H[k]
 
-        After the kernel completes, d_x contains Y[k] and is reused for the inverse FFT.
+    After the kernel completes, d_x contains Y[k] and is reused for the inverse FFT.
 
-        - Reads one element of each input spectrum.
-        - Performs one complex multiply (cuCmulf).
-        - Writes the result back to global memory in-place.
+    - Reads one element of each input spectrum.
+    - Performs one complex multiply (cuCmulf).
+    - Writes the result back to global memory in-place.
 
 2) Implementation
 
