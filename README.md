@@ -270,3 +270,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 74
 - Implementation of power-spectrogram with streams and kernel chaining in CUDA
+
+## Day 75
+- Implementation of Cooley–Tukey FFT variants in CUDA
