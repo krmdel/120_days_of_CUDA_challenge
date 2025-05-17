@@ -5,11 +5,11 @@ Day 75: Implementation of Cooley–Tukey FFT variants in CUDA
 The code performs the benchmarking five different Cooley–Tukey fast-Fourier-transform (FFT) engines on the same real-valued signal of length SIZE (default 16 384 samples).  
 
 Each engine implements a classical variant that trades arithmetic count, memory traffic and access patterns in different ways:
-- Engine 0: iterative radix-2 DIF baseline power-of-two FFT that performs log₂ N stages of radix-2 butterflies after an in-place bit-reversal shuffle.
-- Engine 1: mixed-radix 2/3/5 accepts any 2·3·5-smooth length by chaining tiny radix-5 and radix-3 butterflies before falling back to radix-2.
-- Engine 2: split-radix combines a radix-2 core with a post-processing step that re-uses twiddle factors, giving the lowest known FLOP count for power-of-two N.
-- Engine 3: four-step Stockham An out-of-place, stride-1 algorithm that alternates ping–pong buffers every stage to ensure fully coalesced accesses.
-- Engine 4: six-step introduces two blocked transposes so that every radix-2 sub-FFT works on contiguous data, ideal for large transforms that exceed on-chip cache.
+- Engine 0 - iterative radix-2 DIF: baseline power-of-two FFT that performs log₂ N stages of radix-2 butterflies after an in-place bit-reversal shuffle.
+- Engine 1 - mixed-radix 2/3/5: accepts any 2·3·5-smooth length by chaining tiny radix-5 and radix-3 butterflies before falling back to radix-2.
+- Engine 2 - split-radix: combines a radix-2 core with a post-processing step that re-uses twiddle factors, giving the lowest known FLOP count for power-of-two N.
+- Engine 3 - four-step Stockham An: out-of-place, stride-1 algorithm that alternates ping–pong buffers every stage to ensure fully coalesced accesses.
+- Engine 4 - six-step: introduces two blocked transposes so that every radix-2 sub-FFT works on contiguous data, ideal for large transforms that exceed on-chip cache.
 
 Every butterfly computes:
 
