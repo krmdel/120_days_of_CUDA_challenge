@@ -2,7 +2,7 @@ Day 76: Implementation of Rader's algorithm for a prime length DFT in CUDA
 
 1) Summary of the daily tutorial
 
-The code implements Rader’s algorithm to convert a length-N DFT, where N is prime, into a cyclic convolution of length N-1. By mapping the input samples through a primitive root of the multiplicative group \((\mathbb Z_N)^\*\), the DFT is reduced to
+The code implements Rader’s algorithm to convert a length-N DFT, where N is prime, into a cyclic convolution of length N-1. By mapping the input samples through a primitive root of the multiplicative group, the DFT is reduced to
 
 ```math
 \begin{aligned}
