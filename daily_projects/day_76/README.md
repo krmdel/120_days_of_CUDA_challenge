@@ -12,7 +12,7 @@ X[k] \;&=\; x[0]\;+\;\sum_{m=0}^{N-2} x\!\bigl[g^{\,m}\bigr]\,
 \end{aligned}
 ```
 
-where a_m = x\!\bigl[g^{\,m}\bigr] - the input reordered by powers of the primitive root. b_m = e^{-\,j\,\tfrac{2\pi\,g^{\,m}}{N}} - a twiddle sequence that depends only on $begin:math:text$N$end:math:text$  
+where a_m - the input reordered by powers of the primitive root. b_m - a twiddle sequence that depends only on $begin:math:text$N$end:math:text$  
 
 The circular convolution a * b_k is performed with cuFFT:
 - Forward FFT of both sequences
