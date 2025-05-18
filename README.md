@@ -273,3 +273,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 75
 - Implementation of Cooley–Tukey FFT variants in CUDA
+
+## Day 76
+- Implementation of Rader's algorithm for a prime length DFT in CUDA
