@@ -276,3 +276,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 76
 - Implementation of Rader's algorithm for a prime length DFT in CUDA
+
+## Day 77
+- Implementation of Bluestein/Chirp-Z in CUDA
