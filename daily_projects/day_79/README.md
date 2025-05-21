@@ -1,4 +1,4 @@
-Day 79: Implementation of FFT algorithm comparisonsm in CUDA
+Day 79: Implementation of comparisons of FFT algorithm for 1D signals in CUDA
 
 1) Summary of the daily tutorial
 
