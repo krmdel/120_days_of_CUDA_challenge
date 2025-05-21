@@ -282,3 +282,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 78
 - Implementation of Goertzel filter bank for sparse FFT in CUDA
+
+## Day 79
+- Implementation of FFT algorithm comparisonsm in CUDA
