@@ -285,3 +285,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 79
 - Implementation of comparisons of FFT algorithm for 1D signals in CUDA
+
+## Day 80
+- Implementation of comparisons of FFT algorithm for 2D signals in CUDA
