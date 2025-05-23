@@ -6,8 +6,7 @@ The code benchmarks seven different ways to compute a 2-D discrete Fourier trans
 
 The reference operation of the 2-D DFT is as follows:
 
-```
-math
+```math
 \begin{aligned}
 F(u,v) &= \!\sum_{y=0}^{H-1}\sum_{x=0}^{W-1} f(x,y)\,
         e^{-j\,2\pi\!\bigl(\tfrac{u x}{W}+\tfrac{v y}{H}\bigr)}
