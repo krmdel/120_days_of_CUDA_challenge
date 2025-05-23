@@ -6,8 +6,11 @@ The code implements benchmarking for discrete-Fourier-transform (DFT) on volumet
 
 For every method the forward transform ultimately evaluates the standard 1-D DFT
 
+```
+math
 X[k] \;=\; \sum_{n=0}^{N-1} x[n]\,e^{-j\,2\pi kn/N},
 \qquad k = 0,\dots,N-1
+```
 
 and extends it to higher dimensions by applying the transform separably along the X-, Y- and Z-axes.
 
