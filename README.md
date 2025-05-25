@@ -296,3 +296,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 82
 - Implementation of finite impulse response (FIR) filter in CUDA
+
+## Day 83
+- Implementation of finite impulse response (FIR) filter with shared memory and tiling in CUDA
