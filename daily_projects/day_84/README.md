@@ -3,9 +3,9 @@ Day 84: Implementation of FIR with down-sampling (polyphase decimator) in CUDA
 1) Summary of the daily tutorial
 
 The code implements method for acceleartion of a finite-impulse-response (FIR) filter followed by down-sampling by a factor D (a decimator) on the GPU. Instead of computing every FIR output sample and then discarding D – 1 of them, only the required outputs are produced:
-	- a naïve one-thread-per-output kernel for reference,
-	- an optimized shared-memory tiled kernel that loads the window of input samples cooperatively and re-uses it for a whole tile of outputs,
-	- taps stored in constant memory for fast broadcast to every thread,
+- a naïve one-thread-per-output kernel for reference,
+- an optimized shared-memory tiled kernel that loads the window of input samples cooperatively and re-uses it for a whole tile of outputs,
+- taps stored in constant memory for fast broadcast to every thread,
 	
 The decimated FIR operation is:
 
