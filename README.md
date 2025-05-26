@@ -292,10 +292,13 @@ Here is my 120 days of CUDA challenge!
 ## Day 81
 - Implementation of comparisons of FFT algorithm for N-D signals in CUDA
 
-## 2) Frequency Domain
+## 2) Time Domain
 
 ## Day 82
 - Implementation of finite impulse response (FIR) filter in CUDA
 
 ## Day 83
 - Implementation of finite impulse response (FIR) filter with shared memory and tiling in CUDA
+
+## Day 84
+- Implementation of FIR with down-sampling (polyphase decimator) in CUDA
