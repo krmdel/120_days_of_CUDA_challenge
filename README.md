@@ -302,3 +302,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 84
 - Implementation of FIR with down-sampling (polyphase decimator) in CUDA
+
+## Day 85
+- Implementation of biquad infinite-impulse response (IIR) filter in CUDA
