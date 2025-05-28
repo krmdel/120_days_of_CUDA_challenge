@@ -305,3 +305,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 85
 - Implementation of biquad infinite-impulse response (IIR) filter in CUDA
+
+## Day 86
+- Implementation of moving average by parallel prefix sum in CUDA
