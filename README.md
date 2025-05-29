@@ -308,3 +308,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 86
 - Implementation of moving average by parallel prefix sum in CUDA
+
+## Day 87
+- Implementation of cross correlation for comparison of time domain and FFT with peak detection in CUDA
