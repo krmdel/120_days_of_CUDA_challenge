@@ -19,7 +19,7 @@ f(x,y)=\sum_{u=0}^{7}\sum_{v=0}^{7}\alpha(u)\,\alpha(v)\,C(u,v)\,
 
 - CUDA kernels:
     - dct8x8_forward_naive: one thread-block per 8 × 8 tile, 64 threads (u,v) inside the block, computes a single coefficient C(u,v) with purely global-memory accesses and loops over the 64 spatial positions (x,y) accumulating the inner product with pre-computed cosine factors.
-    dct8x8_inverse_naive: symmetric to the forward kernel. computes one spatial sample f(x,y) from the 64 frequency coefficients in the same block.
+    - dct8x8_inverse_naive: symmetric to the forward kernel. computes one spatial sample f(x,y) from the 64 frequency coefficients in the same block.
 
 2) Implementation
 
