@@ -311,3 +311,8 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 87
 - Implementation of cross correlation for comparison of time domain and FFT with peak detection in CUDA
+
+## 3) Vision Feature Extraction
+
+## Day 88
+- Implementation of two dimensional (2D) discrete cosine transform (DCT) in CUDA
