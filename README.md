@@ -316,3 +316,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 88
 - Implementation of two dimensional (2D) discrete cosine transform (DCT) in CUDA
+
+## Day 89
+- Implementation of forward and inverse DCT using shared memory and tiling in CUDA
