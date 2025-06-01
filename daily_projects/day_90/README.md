@@ -11,7 +11,7 @@ The code implements a JPEG encoder and compression algorithms:
 - Quantisation:
 
 ```math
-q_{i} \;=\; \operatorname{round}\!\bigl( \tfrac{c_{i}}{q_f \, Q_{i}} \bigr)
+q_{i} \;=\; \operatorname{round}\!\left( \frac{c_{i}}{q_f \, Q_{i}} \right)
 ```
 
 - De-quantisation:
