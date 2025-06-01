@@ -319,3 +319,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 89
 - Implementation of forward and inverse DCT using shared memory and tiling in CUDA
+
+## Day 90
+- Implementation of zig-zag scanning and quantisation for JPEG style compression in CUDA
