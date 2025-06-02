@@ -322,3 +322,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 90
 - Implementation of zig-zag scanning and quantisation for JPEG style compression in CUDA
+
+## Day 91
+- Implementation of reconstruction, peak signal-to-noise ratio (PSNR) in CUDA
