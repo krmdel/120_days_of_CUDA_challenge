@@ -24,7 +24,7 @@ Gradient magnitude and angle are then
 
 ```math
 M(x,y)=\sqrt{G_x^2+G_y^2},\qquad
-\theta(x,y)=\operatorname{atan2}\!\bigl(G_y,G_x\bigr)\times\dfrac{180}{\pi}\pmod{180^{\circ}}.
+\theta(x,y)=\mathrm{atan2}\!\left(G_y,G_x\right)\times\frac{180}{\pi}\bmod{180^{\circ}}.
 ```
 
 Pixels are quantised into four orientation bins:
