@@ -325,3 +325,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 91
 - Implementation of reconstruction, peak signal-to-noise ratio (PSNR) in CUDA
+
+## Day 92
+- Implementation of Sobel gradient magnitude and direction in CUDA
