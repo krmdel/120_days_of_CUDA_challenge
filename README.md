@@ -328,3 +328,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 92
 - Implementation of Sobel gradient magnitude and direction in CUDA
+
+## Day 93
+- Implementation of Non-Maximum Suppression (NMS) in CUDA
