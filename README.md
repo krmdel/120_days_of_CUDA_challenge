@@ -331,3 +331,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 93
 - Implementation of Non-Maximum Suppression (NMS) in CUDA
+
+## Day 94
+- Implementation of double threshold with edge tracking in CUDA
