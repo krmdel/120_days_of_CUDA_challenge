@@ -7,25 +7,26 @@ The code implements double threshold hysteresis in CUDA. Starting from a pre-com
 The double threshold step is
 
 ```math
-\operatorname{label}[i]=
+\mathrm{label}[i] =
 \begin{cases}
-2 & \text{if }\text{mag}[i]\ge T_{\text{high}}\\[6pt]
-1 & \text{if }T_{\text{low}}\le\text{mag}[i]<T_{\text{high}}\\[6pt]
-0 & \text{otherwise}
+2 & \mathrm{if\ } \mathrm{mag}[i] \ge T_{\mathrm{high}} \\[6pt]
+1 & \mathrm{if\ } T_{\mathrm{low}} \le \mathrm{mag}[i] < T_{\mathrm{high}} \\[6pt]
+0 & \mathrm{otherwise}
 \end{cases}
 ```
 
 and the hysteresis step repeatedly applies
 
 ```math
-\text{if }\operatorname{label}[p]=1
-\text{ and }\exists\,q\in\mathcal{N}(p):\operatorname{label}[q]=2
-\;\;\Longrightarrow\;\;\operatorname{label}[p]\leftarrow 2
+\text{if }\mathrm{label}[p]=1
+\text{ and }\exists\,q\in\mathcal{N}(p):\mathrm{label}[q]=2
+\;\;\Longrightarrow\;\;\mathrm{label}[p]\leftarrow 2
 ```
+
 - CUDA kernels:
-- classifyKernel: Performs the double-threshold test for every pixel and stores labels 0 / 1 / 2. Massive parallel map with one thread per pixel.
-- hystIterKernel: Executes one hysteresis sweep: weak pixels that touch a strong neighbour become strong; others stay unchanged. A device-side flag counts promotions so the host can decide when to stop iterating. 16×16 thread blocks traverse the image; promotion recorded with atomicAdd.
-- convertStrongToBinary: Final pass that converts label 2 (strong) to binary 1 and everything else to 0. Simple element-wise transform.                                               |
+    - classifyKernel: Performs the double-threshold test for every pixel and stores labels 0 / 1 / 2. Massive parallel map with one thread per pixel.
+    - hystIterKernel: Executes one hysteresis sweep: weak pixels that touch a strong neighbour become strong; others stay unchanged. A device-side flag counts promotions so the host can decide when to stop iterating. 16×16 thread blocks traverse the image; promotion recorded with atomicAdd.
+    - convertStrongToBinary: Final pass that converts label 2 (strong) to binary 1 and everything else to 0. Simple element-wise transform.                                               |
 
 2) Implementation
 
