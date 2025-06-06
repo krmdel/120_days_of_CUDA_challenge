@@ -334,3 +334,7 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 94
 - Implementation of double threshold with edge tracking in CUDA
+
+## Day 95
+- Implementation of structure tensor primitives in CUDA
+
