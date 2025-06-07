@@ -338,3 +338,5 @@ Here is my 120 days of CUDA challenge!
 ## Day 95
 - Implementation of structure tensor primitives in CUDA
 
+## Day 96
+- Implementation of Harris response with shared memory in CUDA
