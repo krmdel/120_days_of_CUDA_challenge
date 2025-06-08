@@ -340,3 +340,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 96
 - Implementation of Harris response with shared memory in CUDA
+
+## Day 97
+- Implementation of FAST corner detector with warp-shuffle in CUDA
