@@ -23,7 +23,7 @@ and then evaluates the Harris response:
 
 ```math
 R = \det(M) - k \, \left(\mathrm{trace}(M)\right)^2
-```
+```  
 
 where the smoothing is a separable 7 × 7 box filter (radius = 3) and k = 0.04.
 
