@@ -22,7 +22,7 @@ I_x I_y & I_y^2
 and then evaluates the Harris response:
 
 ```math
-R = \det(M) - k \, \bigl(\operatorname{trace}(M)\bigr)^2,
+R = \det(M) - k \, \left(\mathrm{trace}(M)\right)^2
 ```
 
 where the smoothing is a separable 7 × 7 box filter (radius = 3) and k = 0.04.
