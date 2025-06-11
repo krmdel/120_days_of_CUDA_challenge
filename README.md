@@ -349,3 +349,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 99
 - Implementation of multi stream overlap for Harris corner detection in CUDA
+
+## Day 100 
+- Implementation of FAST corner detector with learned threshold in CUDA
