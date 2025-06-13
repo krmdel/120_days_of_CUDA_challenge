@@ -355,3 +355,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 101
 - Implementation of 2D integral image with thrust segmented scans and tiled transpose in CUDA
+
+## Day 102
+- Implementation of pinned 2D integral image scan in CUDA
