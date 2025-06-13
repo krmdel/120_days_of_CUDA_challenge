@@ -352,3 +352,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 100 
 - Implementation of FAST corner detector with learned threshold in CUDA
+
+## Day 101
+- Implementation of 2D integral image with thrust segmented scans and tiled transpose in CUDA
