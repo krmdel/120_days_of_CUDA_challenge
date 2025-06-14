@@ -358,3 +358,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 102
 - Implementation of pinned 2D integral image scan in CUDA
+
+## Day 103
+- Implementation of box and Haar filters in CUDA
