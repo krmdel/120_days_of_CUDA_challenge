@@ -364,3 +364,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 104
 - Implementation of Viola–Jones sliding window edge detector in CUDA
+
+## Day 105
+- Implementation of inclusive scan benchmarking in CUDA
