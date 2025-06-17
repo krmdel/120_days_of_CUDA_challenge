@@ -367,3 +367,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 105
 - Implementation of inclusive scan benchmarking in CUDA
+
+## Day 106
+- Implementation of pitched memory and overlapped 2D transfers in CUDA
