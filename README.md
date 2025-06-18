@@ -370,3 +370,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 106
 - Implementation of pitched memory and overlapped 2D transfers in CUDA
+
+## Day 107
+- Implementation of zero overhead multiscale processing with cudaMallocAsync and Memory-Pools in CUDA
