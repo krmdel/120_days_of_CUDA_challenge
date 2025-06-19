@@ -373,3 +373,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 107
 - Implementation of zero overhead multiscale processing with cudaMallocAsync and memory-pools in CUDA
+
+## Day 108
+- Implementation of FP16 vs FP32 vs INT8 row-wise inclusive scan in CUDA
