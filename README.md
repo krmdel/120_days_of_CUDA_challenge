@@ -343,3 +343,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 97
 - Implementation of FAST corner detector with warp-shuffle in CUDA
+
+## Day 98
+- Implementation of Non-Maximum Suppression and corner compaction in CUDA
