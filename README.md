@@ -379,3 +379,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 109
 - Implementation of Sobel gradient in CUDA
+
+## Day 110
+- Implementation of one-warp HOG cell histogram in CUDA
