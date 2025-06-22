@@ -382,3 +382,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 110
 - Implementation of one-warp HOG cell histogram in CUDA
+
+## Day 111
+- Implementation of HOG block descriptor in CUDA
