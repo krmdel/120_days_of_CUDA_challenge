@@ -385,3 +385,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 111
 - Implementation of HOG block descriptor in CUDA
+
+## Day 112
+- Implementation of single frame HOG pipeline with dual streams in CUDA
