@@ -2,8 +2,7 @@ Day 114: Implementation of feature detectors & descriptors in CUDA
 
 1) Summary of the daily tutorial
 
-The code implements a single-scale SIFT-style pipeline. Starting from an 8-bit grayscale image, the code:
-
+The code implements a single scale Scale Invariant Feature Transform (SIFT) style pipeline. Starting from an 8-bit grayscale image, the code:
 - converts pixels to 32-bit floats,
 - builds three Gaussian-blurred images,
 - computes two Differences-of-Gaussians (DoG) to isolate blobs,
@@ -11,8 +10,7 @@ The code implements a single-scale SIFT-style pipeline. Starting from an 8-bit g
 - assigns each key-point a dominant orientation from Sobel gradients, and
 - packs a 128-D descriptor histogram for every surviving key-point.
 
-
-𝐷(𝑥,𝑦,𝜎)  =  𝐿(𝑥,𝑦,𝑘𝜎)  −  𝐿(𝑥,𝑦,𝜎)
+   𝐷(𝑥,𝑦,𝜎)  =  𝐿(𝑥,𝑦,𝑘𝜎)  −  𝐿(𝑥,𝑦,𝜎)
 
 (Difference-of-Gaussians at pixel (𝑥,𝑦); 𝐿 is the Gaussian-blurred image, 𝑘 is the blur ratio.)
 
