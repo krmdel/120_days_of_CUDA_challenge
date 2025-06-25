@@ -391,3 +391,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 113
 - Implementation of HOG-SVM in CUDA
+
+## Day 114
+- Implementation of feature detectors & descriptors in CUDA
