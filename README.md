@@ -394,3 +394,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 114
 - Implementation of feature detectors & descriptors in CUDA
+
+## Day 115
+- Implementation of FAST-9 corner detector in CUDA
