@@ -397,3 +397,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 115
 - Implementation of FAST-9 corner detector in CUDA
+
+## Day 116:
+- Implementation of FAST-9, BRIEF-256 and brute-force Hamming matcher in CUDA
