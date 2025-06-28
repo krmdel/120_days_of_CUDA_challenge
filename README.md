@@ -400,3 +400,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 116:
 - Implementation of FAST-9, BRIEF-256 and brute-force Hamming matcher in CUDA
+
+## Day 117: 
+- Implementation of feature matching with FAST-9 corner detection/BRIEF-256 descriptor generation and brute-force Hamming matcher in CUDA
