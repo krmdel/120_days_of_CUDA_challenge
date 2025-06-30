@@ -406,3 +406,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 118: 
 - Implementation of optical flow using sparse Lucas-Kanade with 3-level pyramid in CUDA
+
+## Day 119: 
+- Implementation of block-matching stereo with 7×7 census transform in CUDA
