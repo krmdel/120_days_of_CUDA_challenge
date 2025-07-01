@@ -409,3 +409,6 @@ Here is my 120 days of CUDA challenge!
 
 ## Day 119: 
 - Implementation of block-matching stereo with 7×7 census transform in CUDA
+
+## Day 120: 
+- Implementation of point-cloud generation from RGB-D image in CUDA
